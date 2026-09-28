@@ -1,0 +1,463 @@
+# Prompt v2: Portfolio Landing Page — Loug (Robotics Engineer & Builder)
+
+Build a personal portfolio landing page for **"Loug"** using **React, TypeScript, Tailwind CSS, Framer Motion, and Lucide React**. Dark theme (`#0C0C0C` background), font **Kanit** (Google Fonts, weights 300–900). Page title: **"Loug — Builder & Engineer"**.
+
+---
+
+## GLOBAL STYLES
+- Background `#0C0C0C` on `html`, `body`, `#root`, and the main wrapper
+- Font family: `'Kanit', sans-serif`
+- Global reset: `box-sizing: border-box`, margin 0, padding 0
+- CSS class `.hero-heading`: gradient text using `background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%)` with `-webkit-background-clip: text` and `-webkit-text-fill-color: transparent`
+- Main wrapper has `overflowX: 'clip'`
+- Smooth scroll: `html { scroll-behavior: smooth }`
+
+## SECTION ORDER
+1. HeroSection
+2. MarqueeSection
+3. AboutSection
+4. JourneySection
+5. ProjectsSection
+6. AchievementsSection
+7. PersonalCornerSection (includes Footer/Contact)
+
+## IMAGE FOLDER STRUCTURE
+All images are local — served from `/public/images/` (referenced as `/images/...` in code). Existing files are already organized:
+
+```
+/public/images/
+  hero/
+    portrait.png                          (hero photo)
+    portrait.jpg                          (fallback)
+
+  marquee/gart/
+    ftc-national.jpg                      (FTC National Champion)
+    ftc-worlds.jpg                        (FTC World Championship Houston)
+    gart-cad.png                          (Mock GART CAD & Design Lab)
+    gart-camp.jpg                         (GART Summer Robotics Camp)
+    gart-expo.jpg                         (GART Robotics Expo)
+    thanh-hoa-scrimmage.jpg               (FTC Thanh Hoa Scrimmage)
+  marquee/envirotrack/
+    envirotrack-booth.png                 (WICO Booth Presentation)
+    envirotrack-device.png                (IoT Air Quality Sensor)
+    envirotrack-member.png                (Live Demo)
+    envirotrack-present.jpg               (Deployment on Stage)
+    envirotrack-team.png                  (Team at WICO)
+  marquee/conrad/
+    conrad-auv-prototype.jpg              (AUV Prototype)
+    conrad-display.jpg                    (Microplastic AUV Display)
+    conrad-electronics.jpg                (Electronics Assembly)
+    conrad-summit.png                     (Johnson Space Center Summit)
+    conrad-team-hall.jpg                  (Space Center Hall)
+
+  about/
+    gear-icon.png                         (mechanical gear decorative icon)
+    circuit-icon.png                      (circuit board decorative icon)
+    plane-icon.png                        (airplane decorative icon)
+    music-icon.png                        (music note decorative icon)
+
+  journey/gart/
+    banner.jpg                            (GART team banner)
+    worlds.jpg                            (FTC Worlds)
+  journey/envirotrack/
+    sensor.png                            (EnviroTrack sensor closeup)
+  journey/conrad/
+    auv.jpg                               (AUV closeup)
+  journey/samsung/
+    code.jpg                              (Samsung SST coding)
+  journey/ins/
+    grid.jpg                              (power grid work)
+  journey/research/
+    gtsd.jpg                              (GTSD conference presentation)
+  journey/stembridge/
+    xadan.jpg                             (Xa Dan School workshop)
+  journey/volunteer/
+    quanson.jpg                           (Quan Son/Cosmosics volunteer)
+
+  projects/gart/
+    robot-01.jpg                          (robot CAD/build)
+    thanh-hoa-scrimmage.jpg               (scrimmage action shot)
+    national-champion.jpg                 (championship winning moment)
+  projects/envirotrack/
+    device-01.jpg                         (sensor unit closeup)
+    poster.jpg                            (project poster)
+    deployment.jpg                        (field deployment photo)
+  projects/conrad/
+    cad-design.jpg                        (CAD model of AUV)
+    electricals.jpg                       (electrical system layout)
+    prototype.jpg                         (physical prototype)
+
+  achievements/
+    gtsd-2024.jpg                         (GTSD conference)
+    ftc-national-champion.jpg             (FTC National banner)
+    conrad-summit-finalist.png            (Conrad Summit at JSC)
+    wico-gold-award.png                   (WICO Gold Medal)
+    ftc-world-championship.jpg            (FTC Worlds Houston)
+    gart-design-award.png                 (FTC Design Award)
+
+  personal/aviation/
+    cockpit-build.jpg                     (DIY A320 cockpit build)
+    cockpit-schematic.jpg                 (glareshield & schematics)
+    childhood-plane.jpg                   (childhood photo with planes)
+  personal/music/
+    electric-guitar.jpg                   (electric guitar photo)
+```
+
+### IMAGE PREPARATION PREREQUISITE
+The raw source images are in `/img/` folder with non-web-friendly formats:
+- **HEIC files** (iPhone format): Must be converted to JPG/WebP before use — browsers cannot display HEIC
+- **Duplicate files** with `(1)` suffix: Remove duplicates
+- **Raw camera filenames** (`IMG_XXXX.JPG`): Already renamed to semantic names in `/public/images/`
+- All images in `/public/images/` are the **production-ready, curated** versions
+
+---
+
+## 1. HERO SECTION
+Full viewport height (`h-screen`), flex column layout, `overflowX: clip`.
+
+**Navbar**: Horizontal nav bar with 4 links — "About", "Journey", "Projects", "Contact" — evenly spaced with `justify-between`. Text color `#D7E2EA`, `font-medium`, uppercase, tracking-wider. Sizes: `text-sm md:text-lg lg:text-[1.4rem]`. Padding: `px-6 md:px-10 pt-6 md:pt-8`. Hover: opacity 70% with 200ms transition. Each link scrolls smoothly to the matching `id`.
+
+**Hero Heading**: Massive `h1` with text `"Hi, i'm Loug"` (lowercase "i", curly apostrophe via `&apos;`). Uses the `.hero-heading` gradient text class. `font-black`, uppercase, tracking-tight, leading-none, whitespace-nowrap, `w-full`. Font sizes: `text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]`. Margin top: `mt-6 sm:mt-4 md:-mt-5`. Wrapped in `overflow-hidden` container.
+
+**Bottom bar**: Flexbox `justify-between items-end` with `pb-7 sm:pb-8 md:pb-10`:
+- **Left**: paragraph text `"an engineer driven by curiosity — from robots to research"`, color `#D7E2EA`, font-light, uppercase, tracking-wide, leading-snug. Font size: `clamp(0.75rem, 1.4vw, 1.5rem)`. Max-width: `max-w-[160px] sm:max-w-[220px] md:max-w-[260px]`.
+- **Right**: `ContactButton` component (see below)
+
+**Hero Portrait**: Centered absolutely. Uses a `Magnet` component (mouse-following magnetic effect) wrapping an image from `hero/portrait.png`. Magnet settings: padding 150, strength 3, activeTransition `"transform 0.3s ease-out"`, inactiveTransition `"transform 0.6s ease-in-out"`. Positioning: `absolute left-1/2 -translate-x-1/2 z-10`. Width: `w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px]`. On mobile: `top-1/2 -translate-y-1/2`. On sm+: `sm:top-auto sm:translate-y-0 sm:bottom-0`. Subtle background glow: `bg-gradient-to-t from-purple-600/20 to-transparent blur-2xl`.
+
+**FadeIn animations**: Navbar delay 0, y -20. Heading: delay 0.15, y 40. Left text: delay 0.35, y 20. Contact button: delay 0.5, y 20. Portrait: delay 0.6, y 30.
+
+---
+
+## 2. MARQUEE SECTION
+Two rows of images that scroll horizontally based on page scroll position. Background `#0C0C0C`. Padding: `pt-24 sm:pt-32 md:pt-40 pb-10`.
+
+**Source images**: Use existing images from `marquee/gart/`, `marquee/envirotrack/`, and `marquee/conrad/` — a total of 16 images split into two rows of 8.
+
+**Row 1 images** (moves **RIGHT** on scroll):
+1. `marquee/gart/ftc-national.jpg` — "FTC National Champion 24751"
+2. `marquee/envirotrack/envirotrack-booth.png` — "EnviroTrack WICO Booth Presentation"
+3. `marquee/conrad/conrad-summit.png` — "Conrad Challenge at Johnson Space Center"
+4. `marquee/gart/thanh-hoa-scrimmage.jpg` — "FTC Thanh Hoa Scrimmage"
+5. `marquee/envirotrack/envirotrack-device.png` — "EnviroTrack IoT Air Quality Sensor"
+6. `marquee/conrad/conrad-auv-prototype.jpg` — "Conrad Challenge AUV Prototype"
+7. `marquee/gart/gart-cad.png` — "Mock GART CAD & Design Lab"
+8. `marquee/envirotrack/envirotrack-present.jpg` — "EnviroTrack Deployment on Stage"
+
+**Row 2 images** (moves **LEFT** on scroll):
+1. `marquee/gart/ftc-worlds.jpg` — "FTC World Championship Houston"
+2. `marquee/conrad/conrad-electronics.jpg` — "Conrad AUV Electronics Assembly"
+3. `marquee/envirotrack/envirotrack-team.png` — "EnviroTrack Team at WICO"
+4. `marquee/conrad/conrad-team-hall.jpg` — "Conrad Space Center Hall"
+5. `marquee/gart/gart-expo.jpg` — "GART Robotics Expo"
+6. `marquee/envirotrack/envirotrack-member.png` — "EnviroTrack Live Demo"
+7. `marquee/conrad/conrad-display.jpg` — "Conrad Microplastic AUV"
+8. `marquee/gart/gart-camp.jpg` — "GART Summer Robotics Camp"
+
+Each row is tripled (3x) for seamless infinite scroll illusion.
+
+- Row 1: `translateX(offset - 200)` — moves right
+- Row 2: `translateX(-(offset - 200))` — moves left
+- Scroll offset formula: `(window.scrollY - sectionTop + window.innerHeight) * 0.3`
+- Each image tile: `420px x 270px` (responsive: `w-[300px] sm:w-[360px] md:w-[420px]`, `h-[190px] sm:h-[230px] md:h-[270px]`), `rounded-2xl`, `object-cover`, lazy loaded.
+- Gap between tiles: `gap-3`. Gap between rows: `gap-3`.
+- `willChange: 'transform'` for performance. Scroll listener is passive.
+- Hover overlay: gradient from-black/80, showing alt text as caption.
+
+---
+
+## 3. ABOUT SECTION
+Full-height centered section, `min-h-screen`, padding `px-5 sm:px-8 md:px-10 py-20`.
+
+Four decorative images positioned absolutely in corners (already exist in `about/`):
+
+- **Top-left**: `about/gear-icon.png`, `w-[120px] sm:w-[160px] md:w-[210px]`, positioned `top-[4%] left-[1%] sm:left-[2%] md:left-[4%]`. FadeIn: delay 0.1, x -80, y 0, duration 0.9. Hover: `rotate-45` transition.
+- **Bottom-left**: `about/circuit-icon.png`, `w-[100px] sm:w-[140px] md:w-[180px]`, positioned `bottom-[8%] left-[3%] sm:left-[6%] md:left-[10%]`. FadeIn: delay 0.25, x -80, y 0, duration 0.9.
+- **Top-right**: `about/plane-icon.png`, `w-[120px] sm:w-[160px] md:w-[210px]`, positioned `top-[4%] right-[1%] sm:right-[2%] md:right-[4%]`. FadeIn: delay 0.15, x 80, y 0, duration 0.9. Hover: `-translate-y-2 translate-x-2`.
+- **Bottom-right**: `about/music-icon.png`, `w-[130px] sm:w-[170px] md:w-[220px]`, positioned `bottom-[8%] right-[3%] sm:right-[6%] md:right-[10%]`. FadeIn: delay 0.3, x 80, y 0, duration 0.9.
+
+**Heading**: `"About me"` using `.hero-heading` gradient text, `font-black`, uppercase, leading-none, tracking-tight, centered. Font size: `clamp(3rem, 12vw, 160px)`. FadeIn: delay 0, y 40.
+
+**Animated paragraph** (character-by-character scroll-driven opacity, using `AnimatedText`): color `#D7E2EA`, font-medium, centered, leading-relaxed, `max-w-[560px]`, font size `clamp(1rem, 2vw, 1.35rem)`. Scroll offset `['start 0.8', 'end 0.2']`. Text content:
+
+> "Starting with robots, I discovered I could turn ideas into reality. From FIRST Tech Challenge competitions to environmental sensors and underwater vehicles, I keep chasing problems that let me build, measure, and learn something new."
+
+Contact button below the text block. Gap between heading/text: `gap-10 sm:gap-14 md:gap-16`. Gap between text block and button: `gap-16 sm:gap-20 md:gap-24`.
+
+---
+
+## 4. JOURNEY SECTION
+White background (`#FFFFFF`), rounded top corners `rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]`. Padding: `px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32`.
+
+**Heading**: `"Journey"` in `#0C0C0C`, font-black, uppercase, centered, font size `clamp(3rem, 12vw, 160px)`. Margin bottom: `mb-16 sm:mb-20 md:mb-28`.
+
+**7 items** in a vertical list, `max-w-5xl`, centered. Each item includes an **optional thumbnail image** on the far left (visible on `md:` and up).
+
+### Journey Items:
+
+**01 — Robotics (GART)**
+Image: `journey/gart/banner.jpg`
+> "Starting as a member, I was immediately drawn into the world of robotics — not because I enjoyed competitions, but because I discovered I could design and build things, turning ideas into reality. From learning mechanical tools and 3D printing my first part to leading a team at Mock GART, each step was new. At FIRST Tech Challenge, I led the mechanics department through the Thanh Hoa Scrimmage to becoming National Champions with a 16-match winning streak and Design Award winners. We continued refining our robot for the World Championship in Texas, reaching Finalist Alliance runner-up in the Edison Division. As Head of Mechanics, I trained a 40-member department, mentored Team Bluebook to win the next Mock GART championship, developed training curricula, taught 34 specialization mentors, and organized GART Camp at the American Embassy's community center."
+
+**02 — EnviroTrack**
+Image: `journey/envirotrack/sensor.png`
+> "I wanted to use what I learned from competitive robots to tackle Hanoi's most pressing problem: air pollution. I led a team of 3 and built EnviroTrack, a system that measures air quality, displays real-time data publicly, with a mobile app for alerts and predictions. At WICO, experts challenged us to think beyond a complete system and consider real-world deployment. We redesigned it into smaller, independent units and built 25+ refined devices for deployment in markets and train stations across Hanoi and communes in Nam Dinh, hoping people can more easily be aware of the air quality around them."
+
+**03 — Conrad Challenge AUV**
+Image: `journey/conrad/auv.jpg`
+> "EnviroTrack made me realize I wanted to keep working on environmental problems, but with something more complex. Our team explored microplastic pollution — the lack of accessible, large-scale data on it. We developed an autonomous underwater vehicle capable of diving and mapping microplastic pollution across lakes and coastal areas. I was in charge of electricals and CAD design — accounting for buoyancy, center of gravity, waterproofing, diving, signal transmission, and accurate measurement all at once. After 4 iterations, we built a working prototype and became one of 25 teams selected from 1,000+ to pitch at the Conrad Global Innovation Challenge at Johnson Space Center."
+
+**04 — Samsung SST**
+Image: `journey/samsung/code.jpg`
+> "I was selected as one of 10 outstanding high school students for Samsung Science and Technology membership at Samsung Vietnam R&D Center. I received mentorship through the Science & Technology Lab, Samsung Innovation Campus coursework, capstone projects, and Korean-language training. I strengthened my foundation in Java and DSA, earned an Advanced level in Samsung's S/W Global Certificate Test, and enrolled in a semiconductor materials fabrication program. For my capstone project, I worked with fellow members to develop a 3D reconstruction tool for preserving artifacts using Gaussian Splatting."
+
+**05 — INS Engineering Internship**
+Image: `journey/ins/grid.jpg`
+> "During my three-month summer internship at INS Engineering, which provides analytics and studies of power systems for grid operators, I was trained in power grid systems. I learned to read RFIs from customers and calculate, translate, and develop dynamic models of power systems to analyze abnormalities under events such as lightning strikes, power outages, and disconnections. I studied power system physics through online lecture notes, became familiar with macros software for calculations, ETAP for parameter calculation, and PSS/E for model development. More importantly, I learned how professional firms organize teams to work together."
+
+**06 — Research (NDO-MPC)**
+Image: `journey/research/gtsd.jpg`
+> "As I explored my field, I became interested in control theory for power systems — combining mathematics with simulation and modeling. Under the guidance of Associate Professor Vo Thanh Ha, I researched NDO-MPC control methods for power distribution systems involving batteries and supercapacitors. I built system models, developed the mathematical framework, and evaluated performance through MATLAB simulations. I was especially proud when my research was accepted at the GTSD conference, where I presented to students and received feedback from professors — giving me a clearer understanding of what research actually feels like."
+
+**07 — STEM Outreach (STEMbridge & Volunteering)**
+Image: `journey/stembridge/xadan.jpg`
+> "I realized how fortunate I was to have access to people, resources, and environment that let me explore STEM beyond school. I founded STEMbridge to create opportunities for students through STEM Fairs, Makerspace donations, and workshops. At Quan Son Boarding School in Lang Son, we built and donated a STEM lab and organized workshops for 300 students. At Xa Dan School for Deaf Students, we adapted activities for different ways of learning and donated educational products. I also volunteered at Cosmosics projects, performing water rocket and holography experiments in Lang Son, and served as a field resetter at the Red River Delta VEX V5 tournaments."
+
+### Item Layout:
+Each item: horizontal layout on desktop. Structure (left to right):
+
+1. **Thumbnail** (optional, hidden on mobile `hidden md:block`): `w-[80px] h-[80px] rounded-xl object-cover flex-shrink-0`, hover: `scale-105` transition. Uses the image path from each journey item.
+2. **Number**: `font-black`, font size `clamp(3rem, 10vw, 140px)`, color `#0C0C0C`, leading-none, tracking-tighter. Hover: `translate-x-2` transition.
+3. **Name + Description** stacked vertically:
+   - Name: `font-medium`, uppercase, `tracking-wide`, font size `clamp(1rem, 2.2vw, 2.1rem)`
+   - Description: `font-light`, `leading-relaxed`, `max-w-2xl`, font size `clamp(0.85rem, 1.6vw, 1.25rem)`, `opacity-60`
+
+Items separated by 1px borders (`rgba(12, 12, 12, 0.15)`) — top border on the container, bottom border on each item. Padding: `py-8 sm:py-10 md:py-12`. Staggered FadeIn: each item delays by `i * 0.1`. Hover: `bg-black/[0.02]` with `transition-colors duration-300`, `px-2 sm:px-4 rounded-xl`.
+
+---
+
+## 5. PROJECTS SECTION
+Dark background (`#0C0C0C`), rounded top corners, pulled up with `-mt-10 sm:-mt-12 md:-mt-14`, `z-10`.
+
+**Heading**: `"Project"` (singular) using `.hero-heading` gradient, same styling as other headings.
+
+3 sticky-stacking project cards that scale down as you scroll past them (card stacking effect using Framer Motion `useScroll` and `useTransform`). Each card is `sticky top-24 md:top-32` inside an `h-[85vh]` container.
+
+Scale calculation: `targetScale = 1 - (totalCards - 1 - index) * 0.03`. Each card offset by `top: calc(5rem + ${index * 28}px)`.
+
+Each card: `rounded-[40px] sm:rounded-[50px] md:rounded-[60px]`, `border-2 border-[#D7E2EA]`, background `#0C0C0C`, padding `p-4 sm:p-6 md:p-8`, `shadow-2xl`, `backdrop-blur-md`.
+
+**Card layout**:
+- **Top row**: Number (`font-black`, `clamp(2.5rem, 6vw, 5.5rem)`), category label + project title stacked, and `LiveProjectButton` labeled "Read More". Separated from images by bottom border `border-[#D7E2EA]/20`, `pb-4 md:pb-6`.
+- **Bottom row**: `grid grid-cols-1 md:grid-cols-12`, `gap-3 sm:gap-4`, `pt-4 md:pt-6`:
+  - Left column (`md:col-span-5`): 2 stacked images. Top: height `clamp(130px, 16vw, 230px)`. Bottom: `flex-grow`, min-height `clamp(160px, 22vw, 340px)`.
+  - Right column (`md:col-span-7`): 1 tall image, `min-h-[220px]`. Hover overlay with gradient showing role + summary.
+
+All images: `rounded-[30px] sm:rounded-[40px] md:rounded-[50px]`, `border border-white/10`, `bg-[#161616]`, hover `scale-105` transition 500ms.
+
+**"Read More" Modal**: Clicking opens a centered overlay (`fixed inset-0 z-50`, `bg-black/80 backdrop-blur-md`):
+- `motion.div` with enter animation (opacity 0→1, scale 0.95→1, y 20→0)
+- `bg-[#121212]`, `border border-[#D7E2EA]/30`, `rounded-3xl`, `max-w-2xl`, `max-h-[90vh] overflow-y-auto`
+- Close button (X icon) top-right
+- Content: purple category label, title, role (with Users icon), summary paragraph, "Key Technical Highlights" header (with Trophy icon), bulleted detail list (purple dots)
+- Bottom close button: `rounded-full bg-white/10 hover:bg-white/20`
+
+**Project data** (using existing image paths):
+
+**Project 01 — "GART / FIRST Tech Challenge"**
+- Category: "Robotics & CAD Engineering"
+- Role: "Head of Mechanics & CAD"
+- Summary: "Engineered competition robots from ground-up CAD to precision fabrication. Led the team through a 16-match undefeated streak to become National Champions and FTC Worlds Finalist Alliance runner-up."
+- Details:
+  1. "Led CAD modeling, mechanical architecture, and rapid prototyping for Team 24751 GreenAms Robotics."
+  2. "Won the FTC Vietnam National Championship 2024 with an undefeated 16-match streak."
+  3. "Awarded the prestigious Design Award for innovative robot chassis and intake mechanisms."
+  4. "Competed at the FIRST Championship in Houston, Texas, reaching Finalist Alliance Runner-Up in the Edison Division."
+  5. "Trained and mentored 40+ members across mechanical design, tool mastery, and competition strategy."
+- Col1 image 1: `projects/gart/robot-01.jpg`
+- Col1 image 2: `projects/gart/thanh-hoa-scrimmage.jpg`
+- Col2 image: `projects/gart/national-champion.jpg`
+
+**Project 02 — "EnviroTrack"**
+- Category: "IoT & Environmental Hardware"
+- Role: "Team Lead (3 members)"
+- Summary: "Engineered an autonomous IoT air-quality monitoring system with 25+ live sensor units deployed across Hanoi and Nam Dinh, presented at WICO Korea with gold recognition."
+- Details:
+  1. "Designed custom LilyGO ESP32 firmware, PMS7003 PM2.5/PM10 laser particle sensors, and SHT30 temperature/humidity modules."
+  2. "Implemented GSM/4G and Wi-Fi failover transmission pushing real-time environmental metrics to ThingSpeak cloud."
+  3. "Created 1D CNN time-series forecasting models to predict pollution threshold breaches up to 4 hours in advance."
+  4. "Constructed weatherproof 3D-printed and laser-cut enclosure nodes for long-term outdoor deployment."
+  5. "Awarded Gold Medal at WICO (World Invention Creativity Olympic) 2024 in Seoul, South Korea."
+- Col1 image 1: `projects/envirotrack/device-01.jpg`
+- Col1 image 2: `projects/envirotrack/poster.jpg`
+- Col2 image: `projects/envirotrack/deployment.jpg`
+
+**Project 03 — "Conrad Challenge — Autonomous Underwater Vehicle"**
+- Category: "Aerospace & Marine Robotics"
+- Role: "Electricals & Mechanical CAD Lead"
+- Summary: "Engineered an autonomous underwater robot (AUV) equipped with optical polarization sensing to map microplastic density in waterways, selected for the Global Innovation Summit at NASA Johnson Space Center."
+- Details:
+  1. "Designed waterproof aluminum chassis, acrylic pressure hull, and brushless DC thrusters rated for depth operation."
+  2. "Engineered power distribution system, ESC motor controllers, and onboard sensor telemetry."
+  3. "Integrated polarized camera vision system to detect microplastic particles via circular polarization scattering."
+  4. "Qualified among top international finalists to present at NASA Johnson Space Center Starship Gallery."
+  5. "Engaged with aerospace engineers and astronauts on autonomous sub-surface marine exploration."
+- Col1 image 1: `projects/conrad/cad-design.jpg`
+- Col1 image 2: `projects/conrad/electricals.jpg`
+- Col2 image: `projects/conrad/prototype.jpg`
+
+---
+
+## 6. ACHIEVEMENTS SECTION
+Dark background (`#0C0C0C`), continues from Projects. Padding: `py-20 sm:py-24 md:py-32 px-5 sm:px-8 md:px-10`.
+
+**Heading**: `"Achievements"` using `.hero-heading` gradient, `font-black`, uppercase, centered, font size `clamp(3rem, 12vw, 160px)`.
+
+**6 achievement cards** in a `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3` with `gap-6 sm:gap-8`. Each card:
+- `rounded-[28px]`, `bg-[#141414]`, `border border-white/10`, hover: `border-purple-500/40`, `-translate-y-1.5`
+- Image area: `h-[220px]`, `rounded-2xl`, with year badge (top-right, `bg-black/60 backdrop-blur-md`)
+- Content: Award icon + organization (purple-400, `text-xs uppercase tracking-wider`), title (`font-semibold text-lg`), description (`text-xs sm:text-sm font-light opacity-60`)
+- Staggered FadeIn: `delay={index * 0.1}`
+
+**Achievement data** (existing images):
+
+1. **"GTSD 2024 Conference Presentation & Paper"**
+   - Org: "8th International Conference on Green Technology & Sustainable Development"
+   - Year: "2024"
+   - Desc: "Researched and presented NDO-MPC control methods for power distribution networks."
+   - Image: `achievements/gtsd-2024.jpg`
+
+2. **"FIRST Tech Challenge National Champion"**
+   - Org: "FIRST Tech Challenge Vietnam 2024"
+   - Year: "2024"
+   - Desc: "Undefeated 16-match streak, winning alliance captain & national banner with Team 24751."
+   - Image: `achievements/ftc-national-champion.jpg`
+
+3. **"Conrad Challenge Global Innovation Finalist"**
+   - Org: "NASA Johnson Space Center Houston"
+   - Year: "2024"
+   - Desc: "Top international honors for Autonomous Underwater Vehicle mapping microplastic pollution."
+   - Image: `achievements/conrad-summit-finalist.png`
+
+4. **"WICO 2024 Gold Medal Award"**
+   - Org: "World Invention Creativity Olympic — Seoul, South Korea"
+   - Year: "2024"
+   - Desc: "Gold award recognition for the EnviroTrack IoT air pollution monitoring & forecasting system."
+   - Image: `achievements/wico-gold-award.png`
+
+5. **"FTC World Championship Finalist Alliance Runner-Up"**
+   - Org: "FIRST Championship Houston, Texas"
+   - Year: "2024"
+   - Desc: "Edison Division Finalist Alliance runner-up representing Vietnam on the global stage."
+   - Image: `achievements/ftc-world-championship.jpg`
+
+6. **"FTC Engineering & Design Award"**
+   - Org: "FIRST Vietnam Robotics Championship"
+   - Year: "2024"
+   - Desc: "Recognized for industrial-grade robot CAD modeling, custom mechanisms, and precision fabrication."
+   - Image: `achievements/gart-design-award.png`
+
+---
+
+## 7. PERSONAL CORNER SECTION (includes Footer/Contact)
+Lighter, more personal tone. Dark background `#0C0C0C`, border-top `border-white/10`. Padding: `py-20 sm:py-24 md:py-32 px-5 sm:px-8 md:px-10`.
+
+**Sub-heading label**: "Beyond Engineering & Code" — purple-400, uppercase tracking-widest, text-xs.
+**Heading**: `"Personal Corner"` using `.hero-heading` gradient, smaller: `clamp(2rem, 6vw, 80px)`.
+
+Two columns side by side (`grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12`), stack on mobile. Each column: `rounded-[36px] bg-[#141414] border border-white/10 p-6 sm:p-8`, `shadow-2xl`.
+
+### Column 1 — Aviation
+- Icon: `Plane` (Lucide), cyan accent (`cyan-400/500`)
+- Title: "Aviation & HomeA320"
+- Subtitle: "Flight Simulation & History"
+- Text:
+
+> "I'm drawn to planes and the history of aviation. My grandfather always took me to the VPAF Museum when I was small, where I would watch and climb into fighter jets. I collect 1:400 model planes and read extensively about Vietnamese aviation history. I became so obsessed that I built a budget home cockpit — a DIY A320 — using wood plates, 3D-printed parts, and electronics. I now run HomeA320, renting it out by the hour to fund my other projects. I also go planespotting with my friends during free time."
+
+- **Interactive gallery**: main image `h-[240px] sm:h-[280px]`, 3 thumbnails below. Images:
+  1. `personal/aviation/cockpit-build.jpg` — "Assembling DIY A320"
+  2. `personal/aviation/cockpit-schematic.jpg` — "Glareshield & Schematics"
+  3. `personal/aviation/childhood-plane.jpg` — "Childhood Dream"
+- Active thumbnail: `border-cyan-400`, opacity 100, scale-102
+- Footer line: "Featured Project: DIY A320 Simulator" / "1:1 Scale Cockpit" (cyan mono)
+
+### Column 2 — Music
+- Icon: `Music` (Lucide), purple accent (`purple-400/500`)
+- Title: "American Classic Rock"
+- Subtitle: "Rock Guitar & Expression"
+- Text:
+
+> "I'm a fan of American rock music from the 60s through the early 90s, especially anti-war and counterculture songs. At my 14th birthday, as a high school entrance gift, my parents gave me an old electric guitar, and I practiced a lot. I occasionally perform near Van Mieu Coffee, close to my house, on summer weekends. Favorite songs: 'More Than a Feeling' and 'It's My Life.' Fun fact: the band behind 'More Than a Feeling' had a member who studied electrical engineering and worked on electric guitars and amplifiers."
+
+- Featured image: `personal/music/electric-guitar.jpg`, `h-[240px] sm:h-[280px]`, hover scale-105
+- Gradient overlay at bottom: `Volume2` icon + "Favorite: Boston — More Than a Feeling"
+- Song badges (pill-shaped): "Electric Guitar", "Anti-War Rock 60s-90s", "Van Mieu Coffee Sessions"
+- Footer line: "Sound Inspiration: Bon Jovi & Boston" / "Analog Warmth" (purple mono)
+
+### Footer / Contact Area
+Below the 2-column grid, separated by `mt-28 pt-16 border-t border-white/10`, centered.
+
+- Label: "Let's Build Together" (purple-400, uppercase tracking-widest, text-xs)
+- Heading: `"Get in Touch"` using `.hero-heading`, `text-3xl sm:text-5xl md:text-6xl`
+- Paragraph: "Open to robotics engineering, embedded hardware systems, research collaborations, or just a chat about aviation and classic rock."
+- `ContactButton` with label "Say Hello"
+- Social links row: Email (`vuducminh07@gmail.com` with Mail icon), GitHub, LinkedIn — separated by dot separators (`text-white/20`). Hover: text-white transition.
+- Copyright: `(c) {year} Loug — Builder & Engineer. Designed with precision.`
+
+---
+
+## REUSABLE COMPONENTS
+
+**ContactButton**: Rounded-full pill button, gradient background `linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)`, inner box-shadow `0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721B1 inset`, white 2px outline with -3px offset. Text: white, font-medium, uppercase, tracking-widest. Sizes: `px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4`, `text-xs sm:text-sm md:text-base`. Accepts optional `label` prop (default: "Contact Me").
+
+**LiveProjectButton**: Ghost/outline pill button. `rounded-full`, `border-2 border-[#D7E2EA]`, text color `#D7E2EA`, font-medium, uppercase, tracking-widest. Sizes: `px-8 py-3 sm:px-10 sm:py-3.5`, `text-sm sm:text-base`. Hover: `bg-[#D7E2EA]/10`. Accepts `onClick` handler and optional `label` prop (default: "Read More").
+
+**FadeIn**: Framer Motion wrapper using `whileInView` with `viewport={{ once: true, margin: "50px", amount: 0 }}`. Accepts `delay`, `duration` (default 0.7), `x` (default 0), `y` (default 30), `className`. Easing: `[0.25, 0.1, 0.25, 1]`. Uses `motion.create()` for dynamic element types.
+
+**Magnet**: Mouse-following magnetic hover effect. Tracks mouse position relative to element center, applies `translate3d` transform divided by strength factor. Activates when cursor is within padding distance of element edge. Smooth transition in (0.3s ease-out) and out (0.6s ease-in-out). Uses `willChange: 'transform'`.
+
+**AnimatedText**: Character-by-character scroll-reveal text animation. Each character goes from opacity 0.2 to 1 based on its position in the text relative to scroll progress. Uses Framer Motion `useScroll` targeting the paragraph element with offset `['start 0.8', 'end 0.2']`. Each character uses invisible placeholder + absolute positioned animated span.
+
+---
+
+## KEY DEPENDENCIES
+- `react`, `react-dom` (^18.3.1)
+- `framer-motion` (^12.38.0)
+- `lucide-react` (^0.344.0)
+- `tailwindcss` (^3.4.1)
+- `vite`, `typescript`
+
+## RESPONSIVE BREAKPOINTS
+Tailwind's default breakpoints (`sm`: 640px, `md`: 768px, `lg`: 1024px), mobile-first approach. Heavy use of `clamp()` for fluid typography. Design scales gracefully from mobile to ultra-wide screens.
+
+---
+
+## CHANGELOG (v1 -> v2)
+
+### Content additions:
+- **Journey expanded**: 4 items -> 7 items, with full storytelling text from content.md
+  - Item #01 (GART): Expanded from 1 sentence to full paragraph covering Mock GART -> FTC -> Worlds -> Training -> GART Camp
+  - Item #02 (EnviroTrack): Now standalone (was merged with Conrad), includes WICO deployment detail
+  - Item #03 (Conrad Challenge): Now standalone with full detail on 4 iterations, buoyancy/COG challenges
+  - **NEW** Item #04 (Samsung SST): Java, DSA, S/W Certificate, Gaussian Splatting capstone, semiconductor program
+  - **NEW** Item #05 (INS Internship): 3-month training, RFIs, ETAP, PSS/E, power system physics
+  - **NEW** Item #06 (Research): NDO-MPC, MATLAB simulations, GTSD conference presentation
+  - Item #07 (STEMbridge): Now includes Volunteering (Cosmosics, Red River VEX)
+- **Aviation text**: Added grandfather/VPAF Museum story, planespotting detail
+- **Music text**: Added 14th birthday guitar gift story, fun fact about Boston's engineer member
+
+### Structure improvements:
+- **Journey thumbnails**: Each journey item now has an optional small image visible on desktop
+- **Image path verification**: All paths verified against actual `/public/images/` file listing
+- **HEIC conversion note**: Added prerequisite section about image format preparation from `/img/` source folder
+- **Smooth scroll**: Added `scroll-behavior: smooth` to global styles
+- **Marquee images**: Explicit listing of all 16 images with exact paths and alt text
+- **Modal details**: Full specification of the Read More modal UI structure
+
+### No breaking changes:
+- HeroSection, MarqueeSection, AboutSection, ProjectsSection, AchievementsSection structure preserved
+- All existing image paths in `/public/images/` remain valid
+- Component APIs unchanged (FadeIn, Magnet, AnimatedText, ContactButton, LiveProjectButton)
+- Section order unchanged
+- Color scheme, typography, and design tokens unchanged
