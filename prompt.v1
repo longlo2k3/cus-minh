@@ -1,6 +1,6 @@
-# Prompt: Portfolio Landing Page — Loug (Robotics Engineer & Builder)
+# Prompt: Portfolio Landing Page — Minh (Robotics Engineer & Builder)
 
-Build a personal portfolio landing page for **"Loug"** using **React, TypeScript, Tailwind CSS, Framer Motion, and Lucide React**. Dark theme (`#0C0C0C` background), font **Kanit** (Google Fonts, weights 300–900). Page title: **"Loug — Builder & Engineer"**.
+Build a personal portfolio landing page for **"Minh"** using **React, TypeScript, Tailwind CSS, Framer Motion, and Lucide React**. Dark theme (`#0C0C0C` background), font **Kanit** (Google Fonts, weights 300–900). Page title: **"Minh — Builder & Engineer"**.
 
 ---
 
@@ -53,7 +53,7 @@ Full viewport height (`h-screen`), flex column layout, `overflowX: clip`.
 
 **Navbar**: Horizontal nav bar with 4 links — "About", "Journey", "Projects", "Contact" — evenly spaced with `justify-between`. Text color `#D7E2EA`, `font-medium`, uppercase, tracking-wider. Sizes: `text-sm md:text-lg lg:text-[1.4rem]`. Padding: `px-6 md:px-10 pt-6 md:pt-8`. Hover: opacity 70% with 200ms transition.
 
-**Hero Heading**: Massive `h1` with text `"Hi, i'm Loug"` (lowercase "i", curly apostrophe via `&apos;`). Uses the `.hero-heading` gradient text class. `font-black`, uppercase, tracking-tight, leading-none, whitespace-nowrap, `w-full`. Font sizes: `text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]`. Margin top: `mt-6 sm:mt-4 md:-mt-5`. Wrapped in `overflow-hidden` container.
+**Hero Heading**: Massive `h1` with text `"Hi, i'm Minh"` (lowercase "i", curly apostrophe via `&apos;`). Uses the `.hero-heading` gradient text class. `font-black`, uppercase, tracking-tight, leading-none, whitespace-nowrap, `w-full`. Font sizes: `text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]`. Margin top: `mt-6 sm:mt-4 md:-mt-5`. Wrapped in `overflow-hidden` container.
 
 **Bottom bar**: Flexbox `justify-between items-end` with `pb-7 sm:pb-8 md:pb-10`:
 - **Left**: paragraph text `"an engineer driven by curiosity — from robots to research"`, color `#D7E2EA`, font-light, uppercase, tracking-wide, leading-snug. Font size: `clamp(0.75rem, 1.4vw, 1.5rem)`. Max-width: `max-w-[160px] sm:max-w-[220px] md:max-w-[260px]`.

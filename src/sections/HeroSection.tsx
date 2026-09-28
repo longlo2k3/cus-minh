@@ -1,13 +1,13 @@
-import React from 'react';
-import { FadeIn } from '../components/FadeIn';
-import { Magnet } from '../components/Magnet';
-import { ContactButton } from '../components/ContactButton';
+import React from "react";
+import { FadeIn } from "../components/FadeIn";
+import { Magnet } from "../components/Magnet";
+import { ContactButton } from "../components/ContactButton";
 
 export const HeroSection: React.FC = () => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -16,7 +16,7 @@ export const HeroSection: React.FC = () => {
       {/* 1. Navbar */}
       <FadeIn delay={0} y={-20} duration={0.8} className="w-full z-20">
         <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8 w-full">
-          {['About', 'Journey', 'Projects', 'Contact'].map((item) => (
+          {["About", "Journey", "Projects", "Contact"].map((item) => (
             <button
               key={item}
               onClick={() => scrollTo(item.toLowerCase())}
@@ -34,10 +34,10 @@ export const HeroSection: React.FC = () => {
           <h1
             className="hero-heading font-black uppercase tracking-tight leading-none whitespace-nowrap w-full text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw] text-center"
             style={{
-              textShadow: '0 10px 40px rgba(0,0,0,0.8)',
+              textShadow: "0 10px 40px rgba(0,0,0,0.8)",
             }}
           >
-            Hi, i&apos;m Loug
+            Hi, i&apos;m Minh
           </h1>
         </FadeIn>
       </div>
@@ -56,7 +56,7 @@ export const HeroSection: React.FC = () => {
               <div className="absolute -inset-4 bg-gradient-to-t from-purple-600/20 to-transparent blur-2xl rounded-full opacity-60 pointer-events-none -z-10" />
               <img
                 src="/images/hero/portrait.png"
-                alt="Loug - Minh"
+                alt="Minh - Minh"
                 className="w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] max-h-[85vh] object-cover sm:object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] rounded-t-3xl sm:rounded-b-none"
               />
             </div>
@@ -70,7 +70,7 @@ export const HeroSection: React.FC = () => {
         <FadeIn delay={0.35} y={20} duration={0.8}>
           <p
             className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[260px]"
-            style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
+            style={{ fontSize: "clamp(0.75rem, 1.4vw, 1.5rem)" }}
           >
             an engineer driven by curiosity — from robots to research
           </p>
@@ -80,7 +80,7 @@ export const HeroSection: React.FC = () => {
         <FadeIn delay={0.5} y={20} duration={0.8}>
           <div className="flex items-center gap-3 sm:gap-4">
             <button
-              onClick={() => scrollTo('projects')}
+              onClick={() => scrollTo("projects")}
               className="hidden sm:inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 text-[#D7E2EA] text-xs sm:text-sm uppercase tracking-widest font-medium hover:bg-white/10 hover:border-white/40 transition-all duration-300"
             >
               <span>Explore Works</span>

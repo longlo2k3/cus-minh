@@ -1,13 +1,6 @@
 import React from "react";
 import { FadeIn } from "../components/FadeIn";
-import {
-  Plane,
-  Music,
-  Mail,
-  Github,
-  Linkedin,
-  Volume2,
-} from "lucide-react";
+import { Plane, Music, Mail, Github, Linkedin, Volume2 } from "lucide-react";
 import { ContactButton } from "../components/ContactButton";
 import { AviationSlideshow } from "../components/AviationSlideshow";
 
@@ -193,7 +186,7 @@ export const PersonalCornerSection: React.FC = () => {
 
             <div className="text-xs text-white/40 font-light flex items-center justify-center gap-1">
               <span>
-                © {new Date().getFullYear()} Loug — Builder & Engineer. Designed
+                © {new Date().getFullYear()} Minh — Builder & Engineer. Designed
                 with precision.
               </span>
             </div>
