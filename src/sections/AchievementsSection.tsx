@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
-import { FadeIn } from '../components/FadeIn';
-import { Award, Trophy, X, ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { FadeIn } from "../components/FadeIn";
+import {
+  X,
+  ShieldCheck,
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════════════════════════ */
 
 interface Achievement {
+  id: string;
   title: string;
   organization: string;
   year: string;
@@ -11,207 +23,857 @@ interface Achievement {
   image: string;
   isHighlight?: boolean;
   citation?: string;
+  badge?: string;
 }
 
 const achievements: Achievement[] = [
   {
-    title: 'Deputy Prime Minister Recognition & Commendation',
-    organization: 'Government of Vietnam',
-    year: '2024',
-    description: 'Special official commendation for outstanding STEM innovation and representing Vietnam at global robotics finals.',
-    image: '/images/achievements/deputy-pm-recognition.jpg',
+    id: "deputy-pm",
+    title: "Deputy Prime Minister Recognition & Commendation",
+    organization: "Government of Vietnam",
+    year: "2024",
+    description:
+      "Special official commendation for outstanding STEM innovation and representing Vietnam at global robotics finals.",
+    image: "/images/achievements/deputy-pm-recognition.jpg",
     isHighlight: true,
-    citation: 'Official governmental honor recognizing national robotics excellence and youth technological empowerment.',
+    badge: "National Honor",
+    citation:
+      "Official governmental honor recognizing national robotics excellence, technological empowerment, and STEM leadership for Vietnam.",
   },
   {
-    title: 'FIRST Tech Challenge National Champion',
-    organization: 'FIRST Tech Challenge Vietnam 2024',
-    year: '2024',
-    description: 'Undefeated 16-match winning streak, winning alliance captain & national champion banner with Team 24751.',
-    image: '/images/achievements/ftc-national-champion.jpg',
+    id: "ftc-national",
+    title: "FIRST Tech Challenge National Champion",
+    organization: "FIRST Tech Challenge Vietnam 2024",
+    year: "2024",
+    description:
+      "Undefeated 16-match winning streak, winning alliance captain & national champion banner with Team 24751.",
+    image: "/images/achievements/ftc-national-champion.jpg",
     isHighlight: true,
-    citation: 'Achieved complete 16-0 undefeated record throughout qualification, playoffs, and championship finals.',
+    badge: "Champion Banner",
+    citation:
+      "Achieved complete 16-0 undefeated record throughout qualification, playoffs, and championship finals.",
   },
   {
-    title: 'Conrad Challenge Global Innovation Finalist',
-    organization: 'NASA Johnson Space Center Houston',
-    year: '2024',
-    description: 'Selected top 25 internationally to present autonomous microplastic mapping AUV at Starship Gallery.',
-    image: '/images/achievements/conrad-summit-finalist.png',
+    id: "conrad-finalist",
+    title: "Conrad Challenge Global Innovation Finalist",
+    organization: "NASA Johnson Space Center Houston",
+    year: "2024",
+    description:
+      "Selected top 25 internationally to present autonomous microplastic mapping AUV at Starship Gallery.",
+    image: "/images/achievements/conrad-summit-finalist.png",
     isHighlight: true,
-    citation: 'Pitched to NASA aerospace engineers, entrepreneurs, and environmental scientists at Space Center Houston.',
+    badge: "Global Finalist",
+    citation:
+      "Pitched to NASA aerospace engineers, entrepreneurs, and environmental scientists at Space Center Houston.",
   },
   {
-    title: 'WICO 2024 Gold Medal Award',
-    organization: 'World Invention Creativity Olympic — Seoul, South Korea',
-    year: '2024',
-    description: 'Gold award recognition for the EnviroTrack autonomous air pollution monitoring & forecasting system.',
-    image: '/images/achievements/wico-gold-award.png',
-    citation: 'Honored by international jury for real-world deployment of 25+ live sensor units across Vietnam communities.',
+    id: "wico-gold",
+    title: "WICO 2024 Gold Medal Award",
+    organization: "World Invention Creativity Olympic — Seoul, South Korea",
+    year: "2024",
+    description:
+      "Gold award recognition for the EnviroTrack autonomous air pollution monitoring & forecasting system.",
+    image: "/images/achievements/wico-gold-award.png",
+    badge: "Gold Medal",
+    citation:
+      "Honored by international jury for real-world deployment of 25+ live sensor units across Vietnam communities.",
   },
   {
-    title: 'FTC World Championship Finalist Alliance Runner-Up',
-    organization: 'FIRST Championship Houston, Texas',
-    year: '2024',
-    description: 'Edison Division Finalist Alliance runner-up representing Vietnam on the highest global robotics stage.',
-    image: '/images/achievements/ftc-world-championship.jpg',
-    citation: 'Ranked top tier among 200+ international elite robotics teams at the George R. Brown Convention Center.',
+    id: "ftc-worlds",
+    title: "FTC World Championship Finalist Alliance Runner-Up",
+    organization: "FIRST Championship Houston, Texas",
+    year: "2024",
+    description:
+      "Edison Division Finalist Alliance runner-up representing Vietnam on the highest global robotics stage.",
+    image: "/images/achievements/ftc-world-championship.jpg",
+    badge: "World Finalist",
+    citation:
+      "Ranked top tier among 200+ international elite robotics teams at the George R. Brown Convention Center.",
   },
   {
-    title: 'GTSD 2024 Conference Presentation & Paper',
-    organization: '8th International Conf on Green Technology & Sustainable Development',
-    year: '2024',
-    description: 'Researched and presented mathematical framework for NDO-MPC vehicular power distribution networks.',
-    image: '/images/achievements/gtsd-2024.jpg',
-    citation: 'Peer-reviewed research presentation published in international conference proceedings under Assoc. Prof. Vo Thanh Ha.',
+    id: "gtsd-paper",
+    title: "GTSD 2024 Conference Presentation & Paper",
+    organization:
+      "8th International Conf on Green Technology & Sustainable Development",
+    year: "2024",
+    description:
+      "Researched and presented mathematical framework for NDO-MPC vehicular power distribution networks.",
+    image: "/images/achievements/gtsd-2024.jpg",
+    badge: "IEEE / GTSD Paper",
+    citation:
+      "Peer-reviewed research presentation published in international conference proceedings under Assoc. Prof. Vo Thanh Ha.",
   },
   {
-    title: 'FTC National Engineering & Design Award',
-    organization: 'FIRST Vietnam Robotics Championship',
-    year: '2024',
-    description: 'Recognized for industrial-grade robot CAD modeling, custom mechanism simplicity, and precision fabrication.',
-    image: '/images/achievements/gart-design-award.png',
-    citation: 'Awarded for exceptional CAD simulation, rapid prototyping, and cost-effective robust mechanical architecture.',
+    id: "ftc-design",
+    title: "FTC National Engineering & Design Award",
+    organization: "FIRST Vietnam Robotics Championship",
+    year: "2024",
+    description:
+      "Recognized for industrial-grade robot CAD modeling, custom mechanism simplicity, and precision fabrication.",
+    image: "/images/achievements/gart-design-award.png",
+    badge: "Design Award",
+    citation:
+      "Awarded for exceptional CAD simulation, rapid prototyping, and cost-effective robust mechanical architecture.",
+  },
+  {
+    id: "press-vtv",
+    title: "National Television & Media Press Coverage",
+    organization: "Vietnam Television (VTV1, VTV3) & Press",
+    year: "2024",
+    description:
+      "Broadcast feature on prime-time national television documenting youth STEM innovation and robotics advancement.",
+    image: "/images/achievements/ftc-tv-press.jpg",
+    badge: "Media Spotlight",
+    citation:
+      "Special prime-time television broadcast on national channels highlighting robotics triumph and community STEM workshops.",
   },
 ];
 
-export const AchievementsSection: React.FC = () => {
-  const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+/* ═══════════════════════════════════════════════════════════════
+   FIBONACCI SPHERE — distribute N cards on a unit sphere
+   ═══════════════════════════════════════════════════════════════ */
 
+const GA = Math.PI * (3 - Math.sqrt(5)); // golden angle
+
+interface SpherePoint {
+  x: number;
+  y: number;
+  z: number;
+  lat: number;
+  lon: number;
+}
+
+function fibonacciSphere(n: number): SpherePoint[] {
+  const points: SpherePoint[] = [];
+  for (let i = 0; i < n; i++) {
+    const yNorm = 1 - (i / (n - 1)) * 2; // +1 → -1
+    const rad = Math.sqrt(Math.max(0, 1 - yNorm * yNorm));
+    const theta = i * GA;
+    const xU = Math.cos(theta) * rad;
+    const zU = Math.sin(theta) * rad;
+    const lat = Math.asin(yNorm) * (180 / Math.PI);
+    const lon = Math.atan2(xU, zU) * (180 / Math.PI);
+    points.push({ x: xU, y: yNorm, z: zU, lat, lon });
+  }
+  return points;
+}
+
+const SPHERE_POINTS = fibonacciSphere(achievements.length);
+
+/* ═══════════════════════════════════════════════════════════════
+   FLIP lightbox coordinates
+   ═══════════════════════════════════════════════════════════════ */
+
+interface FlipCoordinates {
+  dx: number;
+  dy: number;
+  scale: number;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════════════════════════ */
+
+export const AchievementsSection: React.FC = () => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [flipCoords, setFlipCoords] = useState<FlipCoordinates>({
+    dx: 0,
+    dy: 0,
+    scale: 0.3,
+  });
+
+  /* ── 3D Scene Refs ───────────────────────────────────────── */
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const worldRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  /* ── Physics & Animation state ───────────────────────────── */
+  const spinRef = useRef<number>(0); // current yaw
+  const targetSpinRef = useRef<number>(0); // target yaw
+  const tiltRef = useRef<number>(-4); // current pitch
+  const targetTiltRef = useRef<number>(-4); // target pitch
+  const isDraggingRef = useRef<boolean>(false);
+  const dragStartRef = useRef<{
+    x: number;
+    y: number;
+    spin: number;
+    tilt: number;
+  }>({
+    x: 0,
+    y: 0,
+    spin: 0,
+    tilt: -4,
+  });
+  const velocityRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const lastPointerRef = useRef<{ x: number; y: number; time: number }>({
+    x: 0,
+    y: 0,
+    time: 0,
+  });
+  const hasMovedSignificantRef = useRef<boolean>(false);
+  const animFrameIdRef = useRef<number>(0);
+
+  /* ── Dimensions & geometry ───────────────────────────────── */
+  const [radius, setRadius] = useState<number>(484);
+  const [perspective, setPerspective] = useState<number>(1380);
+  const [cardWidth, setCardWidth] = useState<number>(358);
+  const totalCards = achievements.length;
+
+  /* ── Responsive radius, perspective & card size ──────────── */
+  const updateGeometry = useCallback(() => {
+    const w = window.innerWidth;
+    // Container matches max-w-6xl (1152px) like the sections above
+    const containerW = Math.min(w - (w < 640 ? 32 : 64), 1152);
+
+    let R: number;
+    let cw: number;
+    let persp: number;
+
+    if (w <= 480) {
+      R = Math.max(160, Math.round(containerW * 0.46));
+      cw = Math.round(R * 0.78);
+      persp = 700;
+    } else if (w <= 768) {
+      R = Math.max(240, Math.round(containerW * 0.44));
+      cw = Math.round(R * 0.75);
+      persp = 900;
+    } else if (w <= 1024) {
+      R = Math.round(containerW * 0.43);
+      cw = Math.round(R * 0.73);
+      persp = 1180;
+    } else {
+      // Desktop: sphere width matches max-w-6xl (1152px)
+      R = Math.round(containerW * 0.42); // ~484px radius -> ~970px sphere diameter
+      cw = Math.round(R * 0.74); // ~358px card width
+      persp = 1380;
+    }
+
+    setRadius(R);
+    setCardWidth(cw);
+    setPerspective(persp);
+  }, []);
+
+  useEffect(() => {
+    updateGeometry();
+    window.addEventListener("resize", updateGeometry);
+    return () => window.removeEventListener("resize", updateGeometry);
+  }, [updateGeometry]);
+
+  /* ── FLIP delta ──────────────────────────────────────────── */
+  const calculateFlipCoords = useCallback((idx: number): FlipCoordinates => {
+    const cardEl = cardRefs.current[idx];
+    if (!cardEl) return { dx: 0, dy: 0, scale: 0.3 };
+
+    const rect = cardEl.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const targetPlateWidth = Math.min(vw * 0.92, 860);
+    const cardCenterX = rect.left + rect.width / 2;
+    const cardCenterY = rect.top + rect.height / 2;
+
+    const dx = cardCenterX - vw / 2;
+    const dy = cardCenterY - vh / 2;
+    const scale = Math.max(0.04, rect.width / targetPlateWidth);
+
+    return { dx, dy, scale };
+  }, []);
+
+  /* ── Keyboard ────────────────────────────────────────────── */
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleClose();
+      } else if (selectedIndex !== null) {
+        if (e.key === "ArrowRight") handleStepProof(1);
+        else if (e.key === "ArrowLeft") handleStepProof(-1);
+      } else {
+        if (e.key === "ArrowRight") rotateByStep(-1);
+        else if (e.key === "ArrowLeft") rotateByStep(1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedIndex, totalCards]);
+
+  /* ── Global pointer up listener to prevent stuck drag state ─── */
+  useEffect(() => {
+    const handleGlobalRelease = () => {
+      isDraggingRef.current = false;
+      hasMovedSignificantRef.current = false;
+    };
+    window.addEventListener("pointerup", handleGlobalRelease);
+    window.addEventListener("pointercancel", handleGlobalRelease);
+    window.addEventListener("mouseup", handleGlobalRelease);
+    return () => {
+      window.removeEventListener("pointerup", handleGlobalRelease);
+      window.removeEventListener("pointercancel", handleGlobalRelease);
+      window.removeEventListener("mouseup", handleGlobalRelease);
+    };
+  }, []);
+
+  const rotateByStep = (direction: number) => {
+    const stepDeg = 360 / totalCards;
+    targetSpinRef.current += direction * stepDeg;
+  };
+
+  const handleStepProof = (direction: number) => {
+    if (selectedIndex === null) return;
+    const nextIdx = (selectedIndex + direction + totalCards) % totalCards;
+    setFlipCoords(calculateFlipCoords(nextIdx));
+    setSelectedIndex(nextIdx);
+  };
+
+  const handleClose = () => {
+    isDraggingRef.current = false;
+    hasMovedSignificantRef.current = false;
+    velocityRef.current = { x: 0, y: 0 };
+    if (selectedIndex !== null) {
+      setFlipCoords(calculateFlipCoords(selectedIndex));
+    }
+    setSelectedIndex(null);
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     60 FPS CAMERA & CARD RENDER LOOP
+     ═══════════════════════════════════════════════════════════ */
+  useEffect(() => {
+    let isRunning = true;
+
+    const renderLoop = () => {
+      if (!isRunning) return;
+
+      /* ── Momentum & auto-spin ──────────────────────────── */
+      if (!isDraggingRef.current) {
+        // Continuous auto-spin (only paused when lightbox modal is open)
+        if (selectedIndex === null) {
+          targetSpinRef.current += 0.06;
+        }
+
+        // Inertia friction
+        velocityRef.current.x *= 0.94;
+        velocityRef.current.y *= 0.94;
+
+        if (Math.abs(velocityRef.current.x) > 0.002) {
+          targetSpinRef.current += velocityRef.current.x;
+        } else {
+          velocityRef.current.x = 0;
+        }
+        if (Math.abs(velocityRef.current.y) > 0.002) {
+          targetTiltRef.current += velocityRef.current.y;
+        } else {
+          velocityRef.current.y = 0;
+        }
+
+        // Clamp pitch
+        targetTiltRef.current = Math.max(
+          -32,
+          Math.min(32, targetTiltRef.current),
+        );
+      }
+
+      /* ── Smooth interpolation ──────────────────────────── */
+      spinRef.current += (targetSpinRef.current - spinRef.current) * 0.12;
+      tiltRef.current += (targetTiltRef.current - tiltRef.current) * 0.12;
+
+      const sx = tiltRef.current;
+      const sy = spinRef.current;
+
+      /* ── World transform: yaw + pitch at center ─────── */
+      if (worldRef.current) {
+        worldRef.current.style.transform = `rotateY(${sy}deg) rotateX(${sx}deg)`;
+      }
+      /* ── Per-card depth and transform ──────────────────
+         Rotate each unit-sphere vector by the current yaw/pitch
+         to find the world-space depth, then shade accordingly.
+      ──────────────────────────────────────────────────── */
+      const syRad = (sy * Math.PI) / 180;
+      const sxRad = (sx * Math.PI) / 180;
+
+      const cosY = Math.cos(syRad);
+      const sinY = Math.sin(syRad);
+      const cosX = Math.cos(sxRad);
+      const sinX = Math.sin(sxRad);
+
+      cardRefs.current.forEach((cardEl, idx) => {
+        if (!cardEl) return;
+
+        const pt = SPHERE_POINTS[idx];
+
+        // Rotate the unit vector by the camera yaw and pitch to get world depth
+        // yaw rotation around Y
+        const rx1 = pt.x * cosY + pt.z * sinY;
+        const rz1 = -pt.x * sinY + pt.z * cosY;
+        // pitch rotation around X
+        const ry1 = pt.y * cosX - rz1 * sinX;
+        const rz2 = pt.y * sinX + rz1 * cosX;
+
+        const zf = rz2; // world depth -1..1 (1 = nearest)
+
+        // Position card on the sphere surface (no rotation needed — the world handles it)
+        const xPos = pt.x * radius;
+        const yPos = -pt.y * radius; // flip y so +y is up
+        const zPos = pt.z * radius;
+
+        cardEl.style.transform = `translate3d(${xPos}px, ${yPos}px, ${zPos}px) rotateY(${pt.lon}deg) rotateX(${pt.lat}deg)`;
+
+        // Hide focused card (the lightbox replaces it)
+        if (idx === selectedIndex) {
+          cardEl.style.opacity = "0";
+          cardEl.style.pointerEvents = "none";
+          return;
+        }
+
+        // Depth shading: flat black wash, not a CSS filter
+        const base = 0.14 + 0.86 * Math.pow((zf + 1) / 2, 0.85);
+        const dim = 1 - base;
+        const opacity = 0.22 + 0.78 * Math.pow((zf + 1) / 2, 1.1);
+
+        // Darken all cards when lightbox is open
+        const litExtra = selectedIndex !== null ? 0.65 : 0;
+        const finalDim = Math.min(1, dim + litExtra);
+
+        cardEl.style.opacity = `${opacity}`;
+        cardEl.style.setProperty("--card-depth-dim", `${finalDim}`);
+        cardEl.style.zIndex = `${Math.round(((zf + 1) / 2) * 100)}`;
+
+        // Back cards do not capture clicks
+        if (zf < -0.2) {
+          cardEl.style.pointerEvents = "none";
+        } else {
+          cardEl.style.pointerEvents = "auto";
+        }
+      });
+
+      animFrameIdRef.current = requestAnimationFrame(renderLoop);
+    };
+
+    animFrameIdRef.current = requestAnimationFrame(renderLoop);
+
+    return () => {
+      isRunning = false;
+      cancelAnimationFrame(animFrameIdRef.current);
+    };
+  }, [radius, totalCards, selectedIndex]);
+
+  /* ═══════════════════════════════════════════════════════════
+     DRAG INTERACTION
+     ═══════════════════════════════════════════════════════════ */
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (selectedIndex !== null) return;
+    if (e.button !== 0) return; // Only primary mouse button
+    isDraggingRef.current = true;
+    hasMovedSignificantRef.current = false;
+    dragStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      spin: targetSpinRef.current,
+      tilt: targetTiltRef.current,
+    };
+    lastPointerRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      time: performance.now(),
+    };
+    velocityRef.current = { x: 0, y: 0 };
+    // Defer setPointerCapture until user actually drags past slop threshold
+    // so clicks on cards fire reliably without being hijacked.
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    // If no mouse button is held down, cancel any dragging immediately
+    if (e.buttons === 0 && isDraggingRef.current) {
+      isDraggingRef.current = false;
+      hasMovedSignificantRef.current = false;
+      return;
+    }
+    if (!isDraggingRef.current || selectedIndex !== null) return;
+
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+
+    // Click slop: 6px for fine pointers, 14px for coarse
+    const slop = window.matchMedia("(pointer: coarse)").matches ? 14 : 6;
+    if (Math.abs(dx) > slop || Math.abs(dy) > slop) {
+      if (!hasMovedSignificantRef.current) {
+        hasMovedSignificantRef.current = true;
+        try {
+          (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+        } catch {
+          // Ignore
+        }
+      }
+    }
+
+    // Yaw from horizontal, pitch from vertical, 0.13 deg/px
+    const degPerPx = 0.13;
+    targetSpinRef.current = dragStartRef.current.spin + dx * degPerPx;
+    targetTiltRef.current = Math.max(
+      -32,
+      Math.min(32, dragStartRef.current.tilt - dy * degPerPx),
+    );
+
+    // Track velocity for inertia
+    const now = performance.now();
+    const dt = Math.max(1, now - lastPointerRef.current.time);
+    velocityRef.current = {
+      x: ((e.clientX - lastPointerRef.current.x) / dt) * 3.0,
+      y: ((dragStartRef.current.y - e.clientY) / dt) * 2.0,
+    };
+
+    lastPointerRef.current = { x: e.clientX, y: e.clientY, time: now };
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    isDraggingRef.current = false;
+    hasMovedSignificantRef.current = false;
+    try {
+      if ((e.currentTarget as HTMLElement).hasPointerCapture(e.pointerId)) {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      }
+    } catch {
+      // Ignore if already released
+    }
+  };
+
+  const handleCardClick = (idx: number) => {
+    if (hasMovedSignificantRef.current) return;
+    isDraggingRef.current = false;
+    hasMovedSignificantRef.current = false;
+    velocityRef.current = { x: 0, y: 0 };
+    setFlipCoords(calculateFlipCoords(idx));
+    setSelectedIndex(idx);
+  };
+
+  const selectedAchievement =
+    selectedIndex !== null ? achievements[selectedIndex] : null;
+
+  /* ── Dynamic card size for inline styles ────────────────── */
+  const cw = cardWidth;
+  const cardHeight = Math.round(cw / 1.55); // 16:10 cinematic aspect ratio
+  const halfCw = Math.round(cw / 2);
+  const halfCh = Math.round(cardHeight / 2);
+
+  /* ═══════════════════════════════════════════════════════════
+     RENDER
+     ═══════════════════════════════════════════════════════════ */
   return (
     <section
       id="achievements"
-      className="bg-[#0C0C0C] py-20 sm:py-24 md:py-32 px-5 sm:px-8 md:px-10 w-full relative select-none"
+      className="bg-[#0C0C0C] py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 w-full relative select-none overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16 sm:mb-20 md:mb-24">
-          <FadeIn delay={0} y={40} duration={0.8}>
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-purple-900/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+
+      <div className="max-w-6xl mx-auto flex flex-col items-center">
+        {/* Section Heading */}
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <FadeIn delay={0} y={30} duration={0.8}>
             <span className="text-xs uppercase tracking-widest font-semibold text-purple-400 block mb-3">
               National Honors & International Accolades
             </span>
             <h2
               className="hero-heading font-black uppercase text-center leading-none tracking-tight"
-              style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
+              style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
             >
               Achievements
             </h2>
           </FadeIn>
         </div>
 
-        {/* Bento Grid layout for achievements */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {achievements.map((item, index) => (
-            <FadeIn key={index} delay={index * 0.08} y={30} duration={0.7}>
+        {/* ═══════ 3D STAGE ═══════ */}
+        <div
+          ref={stageRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onMouseLeave={() => {
+            isDraggingRef.current = false;
+            hasMovedSignificantRef.current = false;
+          }}
+          className={`relative w-full h-[620px] sm:h-[720px] md:h-[820px] lg:h-[920px] xl:h-[980px] touch-none select-none flex items-center justify-center ${
+            selectedIndex !== null
+              ? "pointer-events-none"
+              : "cursor-grab active:cursor-grabbing"
+          }`}
+          style={{
+            perspective: `${perspective}px`,
+            perspectiveOrigin: "50% 50%",
+          }}
+        >
+          {/* ── 3D World Origin (0×0 center point) ─────────
+              #world is a 0×0 point at top:50% left:50%, so
+              it sits at the middle of the viewport. Every card
+              and the headline emanate from this same origin.
+          ───────────────────────────────────────────────────── */}
+          <div
+            ref={worldRef}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 0,
+              height: 0,
+              transformStyle: "preserve-3d",
+              willChange: "transform",
+            }}
+          >
+            {/* ── Photo Cards on the Fibonacci Sphere ──── */}
+            {achievements.map((item, idx) => (
               <div
-                onClick={() => setSelectedAchievement(item)}
-                className={`rounded-[28px] bg-[#141414] border p-4 sm:p-5 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 shadow-xl h-full cursor-pointer relative overflow-hidden ${
-                  item.isHighlight
-                    ? 'border-purple-500/40 hover:border-purple-400'
-                    : 'border-white/10 hover:border-white/30'
-                }`}
+                key={item.id}
+                ref={(el) => {
+                  cardRefs.current[idx] = el;
+                }}
+                onClick={() => handleCardClick(idx)}
+                onPointerUp={(e) => {
+                  if (!hasMovedSignificantRef.current) {
+                    e.stopPropagation();
+                    handleCardClick(idx);
+                  }
+                }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: `${cw}px`,
+                  height: `${cardHeight}px`,
+                  marginLeft: `${-halfCw}px`,
+                  marginTop: `${-halfCh}px`,
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "visible",
+                  // NOTE: NO overflow:hidden here — it breaks preserve-3d in some browsers
+                  // Clipping is handled by the inner wrapper div below
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  const inner = (e.currentTarget as HTMLElement).querySelector(
+                    ".card-inner",
+                  ) as HTMLElement;
+                  if (inner) {
+                    inner.style.borderColor = "rgba(168,85,247,0.6)";
+                    inner.style.boxShadow = "0 15px 40px rgba(168,85,247,0.4)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const inner = (e.currentTarget as HTMLElement).querySelector(
+                    ".card-inner",
+                  ) as HTMLElement;
+                  if (inner) {
+                    inner.style.borderColor = "rgba(255,255,255,0.2)";
+                    inner.style.boxShadow = "0 20px 50px rgba(0,0,0,0.85)";
+                  }
+                }}
               >
-                {/* Highlight Badge */}
-                {item.isHighlight && (
-                  <div className="absolute top-0 right-0 bg-gradient-to-l from-purple-600/30 to-transparent px-4 py-1 rounded-bl-xl text-[10px] font-mono text-purple-300 uppercase tracking-widest flex items-center gap-1 z-10 pointer-events-none">
-                    <Sparkles size={10} />
-                    <span>Special Honor</span>
-                  </div>
-                )}
-
-                {/* Image Container with Viewfinder Corner Brackets */}
-                <div className="w-full h-[220px] rounded-2xl overflow-hidden bg-[#1c1c1c] mb-4 relative">
-                  {/* Viewfinder brackets */}
-                  <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-white/40 z-10 pointer-events-none" />
-                  <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t border-r border-white/40 z-10 pointer-events-none" />
-                  <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l border-white/40 z-10 pointer-events-none" />
-                  <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-white/40 z-10 pointer-events-none" />
-
+                {/* Inner wrapper handles overflow clipping + border + shadow.
+                    Separated from the outer to preserve the 3D transform chain. */}
+                <div
+                  className="card-inner"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: "14px",
+                    overflow: "hidden",
+                    background: "#0c0c0c",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    boxShadow: "0 20px 50px rgba(0,0,0,0.85)",
+                    transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                >
+                  {/* Image */}
                   <img
                     src={item.image}
                     alt={item.title}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      transition: "transform 0.5s ease",
+                    }}
                   />
-                  <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-xs font-mono text-white border border-white/10">
-                    {item.year}
-                  </div>
-                </div>
 
-                {/* Content */}
-                <div className="flex flex-col flex-grow">
-                  <div className="flex items-center gap-2 text-purple-400 text-xs font-medium uppercase tracking-wider mb-1.5">
-                    <Award size={14} className="flex-shrink-0" />
-                    <span className="truncate">{item.organization}</span>
-                  </div>
-                  <h3 className="text-[#D7E2EA] font-semibold text-lg leading-snug group-hover:text-white transition-colors mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-[#D7E2EA]/60 font-light text-xs sm:text-sm leading-relaxed mb-4">
-                    {item.description}
-                  </p>
-                </div>
+                  {/* Flat black depth wash overlay */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "black",
+                      pointerEvents: "none",
+                      opacity: "var(--card-depth-dim, 0)",
+                    }}
+                  />
 
-                {/* Bottom inspect action */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-purple-400 group-hover:text-purple-300 transition-colors">
-                  <span className="font-mono text-[11px] uppercase tracking-wider">Inspect Proof</span>
-                  <ExternalLink size={13} />
+                  {/* Viewfinder corner brackets */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      width: 10,
+                      height: 10,
+                      borderTop: "1px solid rgba(255,255,255,0.5)",
+                      borderLeft: "1px solid rgba(255,255,255,0.5)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      width: 10,
+                      height: 10,
+                      borderTop: "1px solid rgba(255,255,255,0.5)",
+                      borderRight: "1px solid rgba(255,255,255,0.5)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 8,
+                      left: 8,
+                      width: 10,
+                      height: 10,
+                      borderBottom: "1px solid rgba(255,255,255,0.5)",
+                      borderLeft: "1px solid rgba(255,255,255,0.5)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 8,
+                      right: 8,
+                      width: 10,
+                      height: 10,
+                      borderBottom: "1px solid rgba(255,255,255,0.5)",
+                      borderRight: "1px solid rgba(255,255,255,0.5)",
+                      pointerEvents: "none",
+                    }}
+                  />
                 </div>
               </div>
-            </FadeIn>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Lightbox Proof Modal */}
+      {/* ═══════════════ FLIP LIGHTBOX ═══════════════ */}
       <AnimatePresence>
         {selectedAchievement && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md"
-            onClick={() => setSelectedAchievement(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/90 backdrop-blur-md"
+            onClick={handleClose}
           >
+            {/* FLIP plate: opens from the clicked card, closes back to it */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{
+                x: flipCoords.dx,
+                y: flipCoords.dy,
+                scale: flipCoords.scale,
+                opacity: 0.15,
+              }}
+              animate={{
+                x: 0,
+                y: 0,
+                scale: 1,
+                opacity: 1,
+              }}
+              exit={{
+                x: flipCoords.dx,
+                y: flipCoords.dy,
+                scale: flipCoords.scale,
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.5,
+                ease: [0.22, 0.61, 0.36, 1],
+              }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#141414] border border-white/20 rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl relative"
+              className="bg-[#121212] border border-white/20 rounded-2xl sm:rounded-3xl p-5 sm:p-8 max-w-4xl w-full shadow-2xl relative max-h-[92vh] overflow-y-auto transform-gpu origin-center"
             >
+              {/* Close */}
               <button
-                onClick={() => setSelectedAchievement(null)}
-                className="absolute top-5 right-5 text-white/50 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
+                onClick={handleClose}
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/60 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition-colors cursor-pointer z-20 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider"
+                aria-label="Close lightbox"
               >
-                <X size={20} />
+                <X size={18} />
+                <span className="hidden sm:inline">Close</span>
               </button>
 
-              <div className="rounded-2xl overflow-hidden aspect-video bg-black/50 mb-6 border border-white/10">
+              {/* Main Photo */}
+              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden aspect-[16/10] sm:aspect-[16/9] bg-black/80 mb-6 border border-white/15 flex items-center justify-center shadow-2xl">
                 <img
                   src={selectedAchievement.image}
                   alt={selectedAchievement.title}
                   className="w-full h-full object-contain bg-black"
                 />
-              </div>
 
-              <div className="flex items-center gap-2 text-purple-400 text-xs font-mono uppercase tracking-widest mb-2">
-                <ShieldCheck size={16} />
-                <span>{selectedAchievement.organization} • {selectedAchievement.year}</span>
-              </div>
-
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
-                {selectedAchievement.title}
-              </h3>
-
-              <p className="text-neutral-300 text-sm sm:text-base font-light leading-relaxed mb-6">
-                {selectedAchievement.citation || selectedAchievement.description}
-              </p>
-
-              <div className="flex justify-end">
+                {/* Prev / Next steppers */}
                 <button
-                  onClick={() => setSelectedAchievement(null)}
-                  className="px-6 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStepProof(-1);
+                  }}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/70 hover:text-white border border-white/20 transition-all cursor-pointer"
+                  aria-label="Previous proof"
                 >
-                  Close Proof
+                  <ChevronLeft size={20} />
                 </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStepProof(1);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/70 hover:text-white border border-white/20 transition-all cursor-pointer"
+                  aria-label="Next proof"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+
+              {/* Metadata (2-column on md+) */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-2">
+                {/* Left: Organization, Title & Badge */}
+                <div className="md:col-span-6 flex flex-col">
+                  <div className="flex items-center gap-2 text-purple-400 text-xs font-mono uppercase tracking-widest mb-2">
+                    <ShieldCheck size={16} />
+                    <span>
+                      {selectedAchievement.organization} •{" "}
+                      {selectedAchievement.year}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug mb-3">
+                    {selectedAchievement.title}
+                  </h3>
+
+                  {selectedAchievement.badge && (
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-600/20 border border-purple-500/30 text-purple-300 text-xs font-mono uppercase tracking-wider w-fit">
+                      <Sparkles size={12} />
+                      <span>{selectedAchievement.badge}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: Citation & Field Notes */}
+                <div className="md:col-span-6 flex flex-col justify-between border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6">
+                  <div>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-white/40 block mb-1.5">
+                      Citation & Field Notes
+                    </span>
+                    <p className="text-neutral-200 text-sm sm:text-base font-light leading-relaxed">
+                      {selectedAchievement.citation ||
+                        selectedAchievement.description}
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
