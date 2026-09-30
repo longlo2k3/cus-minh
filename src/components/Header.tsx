@@ -17,6 +17,26 @@ const NAV_ITEMS: NavItem[] = [
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Detect when any modal/popup opens and locks body scroll
+  useEffect(() => {
+    const checkModal = () => {
+      const isLocked =
+        document.body.style.overflow === "hidden" ||
+        document.body.classList.contains("modal-open");
+      setIsModalOpen(Boolean(isLocked));
+    };
+
+    checkModal();
+    const observer = new MutationObserver(checkModal);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,11 +83,14 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out pointer-events-none flex justify-center ${
-        isScrolled
-          ? "pt-3 sm:pt-4 px-3 sm:px-4"
-          : "pt-6 md:pt-8 px-4 sm:px-6 md:px-10"
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out pointer-events-none flex justify-center ${
+        isModalOpen
+          ? "opacity-0 pointer-events-none -translate-y-6 invisible"
+          : isScrolled
+          ? "opacity-100 pt-3 sm:pt-4 px-3 sm:px-4"
+          : "opacity-100 pt-6 md:pt-8 px-4 sm:px-6 md:px-10"
       }`}
+      aria-hidden={isModalOpen}
     >
       <nav
         className={`pointer-events-auto transition-all duration-300 ease-out flex items-center ${

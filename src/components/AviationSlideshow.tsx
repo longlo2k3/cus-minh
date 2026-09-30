@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { ChevronLeft, ChevronRight, Play, Pause, Maximize2, X } from "lucide-react";
 
 export interface AviationSlide {
@@ -65,6 +66,18 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isPreviewOpen, images.length]);
+
+  // Lock body scroll when preview modal is open
+  useEffect(() => {
+    if (isPreviewOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isPreviewOpen]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -155,11 +168,12 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
       </div>
 
       {/* Image Preview Lightbox Modal */}
-      {isPreviewOpen && (
-        <div
-          className="fixed inset-0 z-[100] flex flex-col justify-between bg-black/95 backdrop-blur-md p-3 sm:p-6 select-none"
-          onClick={() => setIsPreviewOpen(false)}
-        >
+      {isPreviewOpen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex flex-col justify-between bg-black/95 backdrop-blur-md p-3 sm:p-6 select-none"
+            onClick={() => setIsPreviewOpen(false)}
+          >
           {/* Header */}
           <div
             className="flex items-center justify-between gap-4 pb-3 border-b border-white/10 max-w-5xl w-full mx-auto"
@@ -244,7 +258,8 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
               </button>
             ))}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

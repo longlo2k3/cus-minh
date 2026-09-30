@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { FadeIn } from "../components/FadeIn";
 import {
   X,
@@ -669,6 +670,18 @@ export const AchievementsSection: React.FC = () => {
   const selectedAchievement =
     selectedIndex !== null ? achievements[selectedIndex] : null;
 
+  // Prevent background scroll when achievement modal is open
+  useEffect(() => {
+    if (selectedAchievement) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedAchievement]);
+
   /* ── Dynamic card size for inline styles ────────────────── */
   const cw = cardWidth;
   const cardHeight = Math.round(cw / 1.55); // 16:10 cinematic aspect ratio
@@ -882,12 +895,13 @@ export const AchievementsSection: React.FC = () => {
       </div>
 
       {/* ═══════════════ FLIP LIGHTBOX ═══════════════ */}
-      <AnimatePresence>
-        {selectedAchievement && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/90 backdrop-blur-md"
-            onClick={handleClose}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {selectedAchievement && (
+            <div
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/90 backdrop-blur-md"
+              onClick={handleClose}
+            >
             {/* FLIP plate: opens from the clicked card, closes back to it */}
             <motion.div
               initial={{
@@ -990,7 +1004,9 @@ export const AchievementsSection: React.FC = () => {
             </motion.div>
           </div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+    )}
     </section>
   );
 };

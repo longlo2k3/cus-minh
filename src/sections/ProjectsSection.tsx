@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { FadeIn } from "../components/FadeIn";
 import {
   X,
@@ -612,6 +613,18 @@ export const ProjectsSection: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [previewData, selectedProject]);
 
+  // Prevent background scroll when modal or preview lightbox is open
+  useEffect(() => {
+    if (selectedProject || previewData) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedProject, previewData]);
+
   const handleOpenPreview = (data: ProjectPreviewData) => {
     setPreviewData(data);
     setPreviewIndex(data.initialIndex);
@@ -767,11 +780,12 @@ export const ProjectsSection: React.FC = () => {
       </div>
 
       {/* Comprehensive Details Popup Modal */}
-      {selectedProject && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-fadeIn"
-          onClick={() => setSelectedProject(null)}
-        >
+      {selectedProject &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-fadeIn"
+            onClick={() => setSelectedProject(null)}
+          >
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-[#121212] border border-[#D7E2EA]/30 rounded-3xl p-5 sm:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col gap-6"
@@ -986,15 +1000,17 @@ export const ProjectsSection: React.FC = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* High-Resolution Image Preview Lightbox Modal */}
-      {previewData && (
-        <div
-          className="fixed inset-0 z-[100] flex flex-col justify-between bg-black/95 backdrop-blur-md p-3 sm:p-6 select-none"
-          onClick={() => setPreviewData(null)}
-        >
+      {previewData &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex flex-col justify-between bg-black/95 backdrop-blur-md p-3 sm:p-6 select-none"
+            onClick={() => setPreviewData(null)}
+          >
           {/* Top Navigation & Status Bar */}
           <div
             className="flex items-center justify-between gap-4 pb-3 border-b border-white/10 max-w-6xl w-full mx-auto"
@@ -1099,7 +1115,8 @@ export const ProjectsSection: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );

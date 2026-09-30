@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { FadeIn } from "../components/FadeIn";
 import {
   ArrowUpRight,
@@ -653,11 +654,12 @@ export default function CommunityImpactSection() {
       {/* ================================================================== */}
       {/* COMPREHENSIVE DETAILS POPUP MODAL                                  */}
       {/* ================================================================== */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-fadeIn"
-          onClick={() => setIsModalOpen(false)}
-        >
+      {isModalOpen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-fadeIn"
+            onClick={() => setIsModalOpen(false)}
+          >
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-[#121212] border border-white/15 text-[#D7E2EA] font-['Kanit',sans-serif] rounded-3xl p-4 sm:p-6 md:p-7 max-w-7xl w-full max-h-[94vh] overflow-y-auto shadow-2xl relative flex flex-col gap-5 sm:gap-6"
@@ -820,7 +822,8 @@ export default function CommunityImpactSection() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );
