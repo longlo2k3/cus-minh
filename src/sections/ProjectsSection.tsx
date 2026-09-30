@@ -637,7 +637,9 @@ export const ProjectsSection: React.FC = () => {
         const cardEl = cardRefs.current[i];
         if (!cardEl) continue;
 
-        const innerEl = cardEl.querySelector(".card-content-box") as HTMLElement;
+        const innerEl = cardEl.querySelector(
+          ".card-content-box",
+        ) as HTMLElement;
         if (!innerEl) continue;
 
         // The topmost / last card in the stack never gets covered
@@ -697,7 +699,9 @@ export const ProjectsSection: React.FC = () => {
 
         // Apply smooth blur, opacity, and scale to the underneath card
         const blurAmount = (totalProgress * 7).toFixed(1);
-        const opacityAmount = Math.max(0.25, 1 - totalProgress * 0.55).toFixed(2);
+        const opacityAmount = Math.max(0.25, 1 - totalProgress * 0.55).toFixed(
+          2,
+        );
         const scaleAmount = Math.max(0.93, 1 - totalProgress * 0.05).toFixed(3);
 
         innerEl.style.filter = `blur(${blurAmount}px)`;
@@ -740,7 +744,7 @@ export const ProjectsSection: React.FC = () => {
               className="font-black uppercase text-center leading-none tracking-tight text-[#0C0C0C]"
               style={{ fontSize: "clamp(2.5rem, 6.5vw, 92px)" }}
             >
-              Projects that grew with me
+              Projects that grew <br /> with me
             </h2>
           </div>
         </FadeIn>
