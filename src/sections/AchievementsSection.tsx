@@ -54,6 +54,18 @@ const achievements: Achievement[] = [
       "Achieved complete 16-0 undefeated record throughout qualification, playoffs, and championship finals.",
   },
   {
+    id: "ftc-world-trophy",
+    title: "World Championship Trophy & Vietnam Flag Honors",
+    organization: "FIRST Championship — Houston, Texas",
+    year: "2024",
+    description:
+      "Historic podium placement holding the Vietnamese national flag with the official Edison Division finalist trophy.",
+    image: "/images/achievements/ftc-world-trophy-flag.jpg",
+    badge: "Historic Milestone",
+    citation:
+      "Highest placement in Vietnamese FTC history as Edison Division Finalist Alliance runner-up, representing national youth robotics on the world stage.",
+  },
+  {
     id: "conrad-finalist",
     title: "Conrad Challenge Global Innovation Finalist",
     organization: "NASA Johnson Space Center Houston",
@@ -77,6 +89,54 @@ const achievements: Achievement[] = [
     badge: "Gold Medal",
     citation:
       "Honored by international jury for real-world deployment of 25+ live sensor units across Vietnam communities.",
+  },
+  {
+    id: "ftc-alliance-captain",
+    title: "1st Place Alliance Captain & World Championship Ticket",
+    organization: "FPT University & FIRST Vietnam",
+    year: "2024",
+    description:
+      "Official 1st Place Alliance Captain banner and ticket to represent Vietnam at the World Championship in Houston.",
+    image: "/images/achievements/ftc-alliance-captain-award.jpg",
+    badge: "Alliance Captain",
+    citation:
+      "Awarded to Team 24751 GreenAms Robotics Team for exceptional match strategy, alliance leadership, and flawless mechanical reliability.",
+  },
+  {
+    id: "samsung-sst",
+    title: "Samsung Science & Technology Fellowship & S/W Certificate",
+    organization: "Samsung Vietnam R&D Center (SRV)",
+    year: "2024",
+    description:
+      "Selected as 1 of 10 outstanding high school students nationwide for SST membership; earned Advanced rating in Global S/W Certificate Test.",
+    image: "/images/achievements/samsung-sst-fellowship.jpg",
+    badge: "Elite Fellowship",
+    citation:
+      "Received intensive mentorship in Java, DSA, and semiconductor fabrication; led capstone project developing Gaussian Splatting 3D artifact reconstruction.",
+  },
+  {
+    id: "conrad-summit-stage",
+    title: "Conrad Summit Pitch & Space Center Houston Stage",
+    organization: "Space Center Houston & Conrad Foundation",
+    year: "2024",
+    description:
+      "Pitched autonomous underwater microplastic mapping AUV before NASA engineers and global jurors at the 2024 Innovation Summit.",
+    image: "/images/achievements/conrad-summit-stage.png",
+    badge: "NASA Stage",
+    citation:
+      "Selected from over 1,000 international teams to present IDEON AUV prototype, answering in-depth aerospace, telemetry, and environmental questions.",
+  },
+  {
+    id: "wico-presentation",
+    title: "WICO Live Defense & Jury Commendation",
+    organization: "Seoul National University of Education, Korea",
+    year: "2024",
+    description:
+      "Defended EnviroTrack environmental IoT architecture directly before the international jury panel, earning unanimous Gold recognition.",
+    image: "/images/achievements/wico-presentation.png",
+    badge: "Jury Defense",
+    citation:
+      "Demonstrated real-time sensor node telemetry, LoRa/GSM transmission, and air pollution forecasting models validated across 25+ locations in Vietnam.",
   },
   {
     id: "ftc-worlds",
@@ -114,6 +174,66 @@ const achievements: Achievement[] = [
     badge: "Design Award",
     citation:
       "Awarded for exceptional CAD simulation, rapid prototyping, and cost-effective robust mechanical architecture.",
+  },
+  {
+    id: "gart-camp-embassy",
+    title: "GART Camp Director & U.S. Embassy STEM Ambassador",
+    organization: "U.S. Embassy Hanoi & GART Robotics",
+    year: "2025",
+    description:
+      "Directed robotics summer curriculum and taught VEX IQ engineering to young students in partnership with the American Center.",
+    image: "/images/achievements/gart-camp-us-embassy.jpg",
+    badge: "Embassy Partner",
+    citation:
+      "Developed comprehensive robotics lesson plans for 34 specialized mentors and led interactive STEM workshops at the U.S. Embassy community center.",
+  },
+  {
+    id: "ftc-thanh-hoa",
+    title: "FTC Thanh Hoa Scrimmage Champion & Lead Driver",
+    organization: "FIRST Tech Challenge Vietnam Scrimmage",
+    year: "2024",
+    description:
+      "Field-tested and piloted custom robot chassis with a perfect match record, leading the 40-member mechanics department.",
+    image: "/images/achievements/ftc-thanh-hoa-scrimmage.jpg",
+    badge: "Scrimmage Champion",
+    citation:
+      "Validated rapid prototype intake and scoring mechanisms under tournament match pressure, establishing the blueprint for the national championship.",
+  },
+  {
+    id: "stembridge-outreach",
+    title: "STEMBridge Founder — Donating STEM Labs & Makerspaces",
+    organization: "STEMBridge Project & Quan Son Boarding School",
+    year: "2024",
+    description:
+      "Built and donated a full STEM lab for 300 mountain students in Lang Son and conducted tailored tactile workshops at Xa Dan Deaf School.",
+    image: "/images/achievements/stembridge-lab-donation.jpg",
+    badge: "Community Founder",
+    citation:
+      "Founded grassroots non-profit providing equipment, training, and ongoing experiments to empower underserved youth through creative engineering.",
+  },
+  {
+    id: "mock-gart-mentor",
+    title: "Mock GART Champion Mentor & VuaMock Captain",
+    organization: "GreenAms Robotics Team (GART)",
+    year: "2023 - 2024",
+    description:
+      "From fabricating first robot VuaMock with market-sourced parts to mentoring Team Bluebook to the Mock GART championship crown.",
+    image: "/images/achievements/mock-gart-mentor.png",
+    badge: "Champion Mentor",
+    citation:
+      "Created training curricula in CAD, 3D printing, and CNC machining, guiding 40 department members to build championship-caliber competitive robots.",
+  },
+  {
+    id: "ins-grid",
+    title: "INS Engineering Power Grid Systems Research Internship",
+    organization: "INS Engineering Solutions",
+    year: "2024",
+    description:
+      "Completed 3-month industrial engineering internship analyzing power grid dynamics, lightning strikes, and transmission stability.",
+    image: "/images/achievements/ins-grid-internship.jpg",
+    badge: "Industry Fellow",
+    citation:
+      "Translated utility client RFIs into dynamic simulation models using ETAP and PSS/E to evaluate electrical grid abnormalities under fault conditions.",
   },
   {
     id: "press-vtv",
@@ -214,9 +334,9 @@ export const AchievementsSection: React.FC = () => {
   const animFrameIdRef = useRef<number>(0);
 
   /* ── Dimensions & geometry ───────────────────────────────── */
-  const [radius, setRadius] = useState<number>(484);
-  const [perspective, setPerspective] = useState<number>(1380);
-  const [cardWidth, setCardWidth] = useState<number>(358);
+  const [radius, setRadius] = useState<number>(320);
+  const [perspective, setPerspective] = useState<number>(1150);
+  const [cardWidth, setCardWidth] = useState<number>(240);
   const totalCards = achievements.length;
 
   /* ── Responsive radius, perspective & card size ──────────── */
@@ -230,22 +350,22 @@ export const AchievementsSection: React.FC = () => {
     let persp: number;
 
     if (w <= 480) {
-      R = Math.max(160, Math.round(containerW * 0.46));
+      R = Math.max(120, Math.round(containerW * 0.31));
       cw = Math.round(R * 0.78);
-      persp = 700;
+      persp = 650;
     } else if (w <= 768) {
-      R = Math.max(240, Math.round(containerW * 0.44));
+      R = Math.max(160, Math.round(containerW * 0.3));
       cw = Math.round(R * 0.75);
-      persp = 900;
+      persp = 800;
     } else if (w <= 1024) {
-      R = Math.round(containerW * 0.43);
+      R = Math.round(containerW * 0.29);
       cw = Math.round(R * 0.73);
-      persp = 1180;
+      persp = 1000;
     } else {
-      // Desktop: sphere width matches max-w-6xl (1152px)
-      R = Math.round(containerW * 0.42); // ~484px radius -> ~970px sphere diameter
-      cw = Math.round(R * 0.74); // ~358px card width
-      persp = 1380;
+      // Desktop: sphere diameter scaled to ~2/3 of previous size
+      R = Math.round(containerW * 0.28); // ~322px radius -> ~645px sphere diameter
+      cw = Math.round(R * 0.74); // ~238px card width
+      persp = 1150;
     }
 
     setRadius(R);
@@ -561,21 +681,19 @@ export const AchievementsSection: React.FC = () => {
   return (
     <section
       id="achievements"
-      className="bg-[#0C0C0C] py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 w-full relative select-none overflow-hidden"
+      className="bg-[#0C0C0C] text-[#D7E2EA] font-['Kanit',sans-serif] py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 shadow-2xl w-full relative select-none overflow-hidden z-20"
     >
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-purple-900/10 rounded-full blur-[160px] pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/3 w-[450px] h-[450px] bg-cyan-900/15 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto flex flex-col items-center">
         {/* Section Heading */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <FadeIn delay={0} y={30} duration={0.8}>
-            <span className="text-xs uppercase tracking-widest font-semibold text-purple-400 block mb-3">
-              National Honors & International Accolades
-            </span>
             <h2
-              className="hero-heading font-black uppercase text-center leading-none tracking-tight"
-              style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
+              className="hero-heading font-black uppercase text-center leading-none tracking-tight text-white"
+              style={{ fontSize: "clamp(2.5rem, 6.5vw, 92px)" }}
             >
               Achievements
             </h2>
@@ -593,7 +711,7 @@ export const AchievementsSection: React.FC = () => {
             isDraggingRef.current = false;
             hasMovedSignificantRef.current = false;
           }}
-          className={`relative w-full h-[620px] sm:h-[720px] md:h-[820px] lg:h-[920px] xl:h-[980px] touch-none select-none flex items-center justify-center ${
+          className={`relative w-full h-[440px] sm:h-[500px] md:h-[580px] lg:h-[660px] xl:h-[700px] touch-none select-none flex items-center justify-center ${
             selectedIndex !== null
               ? "pointer-events-none"
               : "cursor-grab active:cursor-grabbing"
@@ -653,8 +771,8 @@ export const AchievementsSection: React.FC = () => {
                     ".card-inner",
                   ) as HTMLElement;
                   if (inner) {
-                    inner.style.borderColor = "rgba(168,85,247,0.6)";
-                    inner.style.boxShadow = "0 15px 40px rgba(168,85,247,0.4)";
+                    inner.style.borderColor = "rgba(168,85,247,0.85)";
+                    inner.style.boxShadow = "0 20px 40px rgba(168,85,247,0.35)";
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -662,8 +780,8 @@ export const AchievementsSection: React.FC = () => {
                     ".card-inner",
                   ) as HTMLElement;
                   if (inner) {
-                    inner.style.borderColor = "rgba(255,255,255,0.2)";
-                    inner.style.boxShadow = "0 20px 50px rgba(0,0,0,0.85)";
+                    inner.style.borderColor = "rgba(255,255,255,0.15)";
+                    inner.style.boxShadow = "0 15px 35px rgba(0,0,0,0.6)";
                   }
                 }}
               >
@@ -676,9 +794,9 @@ export const AchievementsSection: React.FC = () => {
                     inset: 0,
                     borderRadius: "14px",
                     overflow: "hidden",
-                    background: "#0c0c0c",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    boxShadow: "0 20px 50px rgba(0,0,0,0.85)",
+                    background: "#141414",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
                     transition: "border-color 0.3s ease, box-shadow 0.3s ease",
                   }}
                 >
@@ -696,12 +814,12 @@ export const AchievementsSection: React.FC = () => {
                     }}
                   />
 
-                  {/* Flat black depth wash overlay */}
+                  {/* Atmospheric depth wash overlay */}
                   <div
                     style={{
                       position: "absolute",
                       inset: 0,
-                      background: "black",
+                      background: "#0C0C0C",
                       pointerEvents: "none",
                       opacity: "var(--card-depth-dim, 0)",
                     }}
@@ -800,11 +918,10 @@ export const AchievementsSection: React.FC = () => {
               {/* Close */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/60 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition-colors cursor-pointer z-20 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider"
-                aria-label="Close lightbox"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/60 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition-colors cursor-pointer z-20"
+                aria-label="Close"
               >
                 <X size={18} />
-                <span className="hidden sm:inline">Close</span>
               </button>
 
               {/* Main Photo */}
@@ -862,17 +979,12 @@ export const AchievementsSection: React.FC = () => {
                   )}
                 </div>
 
-                {/* Right: Citation & Field Notes */}
-                <div className="md:col-span-6 flex flex-col justify-between border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6">
-                  <div>
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-white/40 block mb-1.5">
-                      Citation & Field Notes
-                    </span>
-                    <p className="text-neutral-200 text-sm sm:text-base font-light leading-relaxed">
-                      {selectedAchievement.citation ||
-                        selectedAchievement.description}
-                    </p>
-                  </div>
+                {/* Right: Description */}
+                <div className="md:col-span-6 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6">
+                  <p className="text-neutral-200 text-sm sm:text-base font-light leading-relaxed">
+                    {selectedAchievement.citation ||
+                      selectedAchievement.description}
+                  </p>
                 </div>
               </div>
             </motion.div>

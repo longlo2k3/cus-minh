@@ -7,26 +7,16 @@ export const HeroSection: React.FC = () => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      const yOffset = -80;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
   return (
     <section className="relative h-screen w-full flex flex-col justify-between overflow-x-clip bg-[#0C0C0C] select-none">
-      {/* 1. Navbar */}
-      <FadeIn delay={0} y={-20} duration={0.8} className="w-full z-20">
-        <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8 w-full">
-          {["About", "Journey", "Projects", "Contact"].map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollTo(item.toLowerCase())}
-              className="text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-lg lg:text-[1.4rem] transition-opacity duration-200 hover:opacity-70 cursor-pointer bg-transparent border-none p-0"
-            >
-              {item}
-            </button>
-          ))}
-        </nav>
-      </FadeIn>
+      {/* 1. Top Spacer for Fixed Header */}
+      <div className="w-full h-16 md:h-20 shrink-0 pointer-events-none" aria-hidden="true" />
 
       {/* 2. Hero Heading */}
       <div className="w-full overflow-hidden z-0 px-2 sm:px-4 text-center mt-6 sm:mt-4 md:-mt-5">
@@ -56,7 +46,7 @@ export const HeroSection: React.FC = () => {
               <div className="absolute -inset-4 bg-gradient-to-t from-purple-600/20 to-transparent blur-2xl rounded-full opacity-60 pointer-events-none -z-10" />
               <img
                 src="/images/hero/portrait.png"
-                alt="Minh - Minh"
+                alt="Minh"
                 className="w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] max-h-[85vh] object-cover sm:object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] rounded-t-3xl sm:rounded-b-none"
               />
             </div>

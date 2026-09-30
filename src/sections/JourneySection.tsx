@@ -146,9 +146,6 @@ export const JourneySection: React.FC = () => {
         {/* Section Heading */}
         <FadeIn delay={0} y={40} duration={0.8}>
           <div className="text-center mb-16 sm:mb-20 md:mb-24">
-            <span className="text-xs uppercase tracking-widest font-semibold text-purple-600 block mb-3">
-              Chronicles & Engineering Evolution
-            </span>
             <h2
               className="text-[#0C0C0C] font-black uppercase text-center leading-none tracking-tight"
               style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
@@ -225,7 +222,7 @@ export const JourneySection: React.FC = () => {
                             : "bg-black/5 text-[#0C0C0C] hover:bg-black/10"
                         }`}
                       >
-                        <span>{isExpanded ? "Close Note" : "Field Note"}</span>
+                        <span>{isExpanded ? "Close" : "Read Story"}</span>
                         {isExpanded ? (
                           <ChevronUp size={14} />
                         ) : (
@@ -235,14 +232,11 @@ export const JourneySection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Expanded Field Note Story Drawer — NO ANIMATION / ZERO FLICKER */}
+                  {/* Expanded Story Drawer — NO ANIMATION / ZERO FLICKER */}
                   {isExpanded && (
                     <div className="mt-6 pt-6 border-t border-dashed border-black/15 bg-neutral-50/80 rounded-2xl p-5 sm:p-6">
                       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                         <div className="lg:col-span-8 flex flex-col gap-3">
-                          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-purple-700">
-                            <span>Authentic Field Note & Retrospective</span>
-                          </div>
                           <p className="text-neutral-800 font-normal leading-relaxed text-sm sm:text-base">
                             {item.fullStory}
                           </p>
@@ -253,7 +247,7 @@ export const JourneySection: React.FC = () => {
                           <div className="lg:col-span-4 flex flex-col gap-2">
                             <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 flex items-center gap-1">
                               <ImageIcon size={12} />
-                              Field Artifacts
+                              Gallery
                             </span>
                             <div className="grid grid-cols-2 gap-2">
                               {item.gallery.map((imgSrc, imgIdx) => (

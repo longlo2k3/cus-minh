@@ -76,6 +76,16 @@ copy(path.join(baseDir, 'img/Conrad/File_000.png'), path.join(publicImages, 'ach
 copy(path.join(baseDir, 'img/Wico/Wico/File_000.png'), path.join(publicImages, 'achievements/wico-gold-award.png'));
 copy(path.join(baseDir, 'img/FTC quoc te/1.jpg'), path.join(publicImages, 'achievements/ftc-world-championship.jpg'));
 copy(path.join(baseDir, 'img/Gart/File_000.png'), path.join(publicImages, 'achievements/gart-design-award.png'));
+copy(path.join(baseDir, 'img/FTC quoc te/1K1V31ASD_5836GL.JPG'), path.join(publicImages, 'achievements/ftc-world-trophy-flag.jpg'));
+copy(path.join(baseDir, 'img/FTC trong nuoc/1K1V2SJK5_5836GL.JPG'), path.join(publicImages, 'achievements/ftc-alliance-captain-award.jpg'));
+copy(path.join(baseDir, 'img/Gart Camp 2025/IMG_6978.JPG'), path.join(publicImages, 'achievements/gart-camp-us-embassy.jpg'));
+copy(path.join(baseDir, 'img/FTC Thanh Hoa/IMG_6824.JPG'), path.join(publicImages, 'achievements/ftc-thanh-hoa-scrimmage.jpg'));
+copy(path.join(baseDir, 'img/Stembridge/File_000(1).png'), path.join(publicImages, 'achievements/stembridge-lab-donation.jpg'));
+copy(path.join(baseDir, 'img/Gart/File_000.png'), path.join(publicImages, 'achievements/mock-gart-mentor.png'));
+copy(path.join(baseDir, 'img/Ảnh thực tập/Tri Nam/1JSJ401LT_5836GL.JPG'), path.join(publicImages, 'achievements/samsung-sst-fellowship.jpg'));
+copy(path.join(baseDir, 'img/Ảnh thực tập/Tri Nam/1JSJ40211_5836GL.JPG'), path.join(publicImages, 'achievements/ins-grid-internship.jpg'));
+copy(path.join(baseDir, 'img/Conrad/File_000(1).png'), path.join(publicImages, 'achievements/conrad-summit-stage.png'));
+copy(path.join(baseDir, 'img/Wico/Wico/File_000(1).png'), path.join(publicImages, 'achievements/wico-presentation.png'));
 
 // 7. Personal
 copy(path.join(baseDir, 'img/buồng lái/1K1MLIA18_5836GL.jpg'), path.join(publicImages, 'personal/aviation/cockpit-build.jpg'));

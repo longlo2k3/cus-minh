@@ -82,7 +82,7 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
     >
       {/* Main Image Frame (Zero-animation, instant display) */}
       <div
-        className="w-full h-[240px] sm:h-[280px] rounded-2xl overflow-hidden bg-black mb-3 border border-white/10 relative cursor-zoom-in group"
+        className="w-full h-[240px] sm:h-[280px] rounded-2xl overflow-hidden bg-neutral-950 mb-3 border border-neutral-200 relative cursor-zoom-in group shadow-sm"
         onClick={() => setIsPreviewOpen(true)}
       >
         {images.map((img, idx) => (
@@ -139,10 +139,10 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
             key={idx}
             type="button"
             onClick={() => setCurrentSlide(idx)}
-            className={`h-14 rounded-lg overflow-hidden border-2 cursor-pointer ${
+            className={`h-14 rounded-lg overflow-hidden border-2 cursor-pointer transition-all ${
               currentSlide === idx
-                ? "border-cyan-400 opacity-100"
-                : "border-white/10 opacity-50 hover:opacity-90"
+                ? "border-cyan-500 opacity-100 shadow-sm"
+                : "border-neutral-200 opacity-60 hover:opacity-100"
             }`}
           >
             <img
@@ -182,7 +182,7 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
                 type="button"
                 onClick={() => setIsPreviewOpen(false)}
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors flex items-center gap-1.5"
-                title="Đóng (Esc)"
+                title="Close"
               >
                 <X size={18} />
                 <span className="text-xs font-mono hidden sm:inline">ESC</span>
@@ -199,7 +199,7 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
               type="button"
               onClick={prevSlide}
               className="absolute left-2 sm:left-4 z-20 p-2.5 sm:p-3 rounded-full bg-black/75 hover:bg-black border border-white/20 text-white cursor-pointer transition-colors shadow-2xl"
-              title="Ảnh trước (Mũi tên trái)"
+              title="Previous"
             >
               <ChevronLeft size={22} />
             </button>
@@ -214,7 +214,7 @@ export const AviationSlideshow: React.FC<AviationSlideshowProps> = ({
               type="button"
               onClick={nextSlide}
               className="absolute right-2 sm:right-4 z-20 p-2.5 sm:p-3 rounded-full bg-black/75 hover:bg-black border border-white/20 text-white cursor-pointer transition-colors shadow-2xl"
-              title="Ảnh tiếp theo (Mũi tên phải)"
+              title="Next"
             >
               <ChevronRight size={22} />
             </button>

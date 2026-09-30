@@ -1,158 +1,307 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FadeIn } from "../components/FadeIn";
-import { LiveProjectButton } from "../components/LiveProjectButton";
 import {
   X,
-  Trophy,
-  Users,
-  Wrench,
   ExternalLink,
   Play,
   Radio,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  Cpu,
-  Layers,
-  Sparkles,
   Maximize2,
   ChevronLeft,
   ChevronRight,
+  Bot,
+  Wind,
+  Quote,
+  Compass,
+  ArrowRight,
+  BookOpen,
 } from "lucide-react";
 
-interface Project {
+export interface MediaItem {
+  id: string;
+  label: string;
+  type: "video" | "image";
+  src: string;
+  caption: string;
+  tag?: string;
+}
+
+export interface StoryParagraph {
+  title?: string;
+  text: string;
+}
+
+export interface Project {
   number: string;
+  subGroup: "Robotics" | "Devices that solve my concerns";
   category: string;
   categoryColor: string;
   title: string;
-  role: string;
-  challenge: string;
-  solution: string;
-  summary: string;
-  fullNarrative: string;
-  telemetry: { label: string; value: string }[];
-  highlights: string[];
-  videoSrc?: string;
-  videoCaption?: string;
-  col1Image1: string;
-  col1Image2: string;
-  col2Image: string;
-  cadUrl?: string;
-  liveUrl?: string;
-  externalLabel?: string;
+  tagline: string;
+  excerpt: string;
+  storyParagraphs: StoryParagraph[];
+  takeaway?: string;
+  metrics: { label: string; value: string }[];
+  mediaItems: MediaItem[];
+  externalLinks: { label: string; url: string }[];
 }
 
 const projects: Project[] = [
   {
     number: "01",
-    category: "Robotics & CAD Engineering",
+    subGroup: "Robotics",
+    category: "Robotics",
     categoryColor: "#8B5CF6",
-    title: "GART / FIRST Tech Challenge 24751",
-    role: "Head of Mechanics & CAD Architecture",
-    challenge:
-      "Designing and prototyping a competition robot with limited budget, high-speed intake, low center-of-gravity, and sub-second game element indexing under intense tournament stress.",
-    solution:
-      "Engineered ground-up CAD in Onshape with finite element simulation. Utilized custom CNC aluminum chassis, carbon-reinforced 3D printed components, and optimized motor gearboxes. Led team to 16-0 undefeated National Championship.",
-    summary:
-      "Engineered competition robots from ground-up CAD to precision fabrication. Led Team 24751 through a 16-match undefeated streak to become Vietnam National Champions and FTC Worlds Finalist Alliance runner-up in Houston, Texas.",
-    fullNarrative:
-      "Starting from zero with the Mock GART competition, I served as team captain and designed our first robot, VuaMock, on a shoestring budget by sourcing raw materials from Hanoi mechanical markets. Stepping up to FIRST Tech Challenge as Head of Mechanics-CAD, I led our 40-member department from the Thanh Hoa Scrimmage through the National Championship with a 16-0 undefeated record and the Design Award. Refined for the World Championship in Houston, Texas, our robot achieved Finalist Alliance runner-up in the Edison Division. Beyond competition, I developed mechanics curricula, mentored Team Bluebook to another championship, and organized GART Camp teaching VEX IQ at the US Embassy community center.",
-    telemetry: [
-      { label: "CAD Platform", value: "Onshape & Fusion 360" },
-      { label: "Chassis Material", value: "CNC 6061 Alum & Carbon PLA" },
-      { label: "Match Record", value: "16-0 Undefeated National Run" },
-      { label: "Global Standing", value: "Edison Division Finalist Runner-Up" },
+    title: "GART",
+    tagline: "FIRST Tech Challenge Team 24751 · GreenAms Robotics",
+    excerpt:
+      "Starting as a member, I was immediately drawn into the world of robotics, discovering I could turn ideas into reality. From building our first VuaMock robot under a shoestring budget to serving as Head of Mechanics-CAD, I led our team to an undefeated 16-match national championship and advanced to Finalist Alliance runner-up at the FIRST Championship in Texas.",
+    storyParagraphs: [
+      {
+        title: "Starting with Mock GART.",
+        text: "Starting as a member, I was immediately drawn into the world of robotics, not because I particularly enjoyed robot competitions or the atmosphere around them, but simply because I had discovered that I could design and build things, and turn an idea into reality. From my first steps, such as learning to use mechanical tools and design software, studying design principles, adjusting settings and printing my first 3D-printed part, placing my first CNC order, and making my first cuts of wood, each experience felt new because it was the first time I had ever built something myself.",
+      },
+      {
+        text: "In my first internal Mock GART competition, I became a team captain. Despite having little experience, I learned for the first time how to work as a team, coordinate tasks across different divisions, and design and fabricate my first robot. More importantly, I learned how to prototype under a limited budget: simplifying mechanisms, finding affordable materials, and visiting Hanoi's mechanical markets to compare prices and source parts for our first VuaMock robot. Although we finished second, the competition became the first event that sparked my intense passion for engineering and motivated me to go further.",
+      },
+      {
+        title: "FIRST Tech Challenge (FTC).",
+        text: "Continuing my journey with GART, I joined the FIRST Tech Challenge team and was selected as Head of Mechanics-CAD. At FIRST, I competed in events such as the Thanh Hoa Scrimmage, continuously improving our designs and mechanisms. I applied what I had learned from building our Mock GART robot, especially simplifying designs and reducing unnecessary iterations, while using calculation and simulation software to keep our designs efficient and affordable.",
+      },
+      {
+        text: "These efforts helped us win the FIRST Tech Challenge Vietnam National Round with a 16-match winning streak and earn the Design Award. After winning the national round, we continued refining our robot for the World Championship in Texas, where we became the top alliance in the Edison Division and advanced to the Finalist Alliance, finishing second overall.",
+      },
+      {
+        title: "Leadership & Mentoring.",
+        text: "As Head of Mechanics, I led my department of 40 members, training them in hardware basics and creating a training curriculum on design, 3D printing, and manufacturing. I also continued mentoring at internal competitions, where I mentored Team Bluebook and helped them build the championship-winning robot at the following year's Mock GART competition, something I had not been able to accomplish myself.",
+      },
+      {
+        title: "Training & GART Camp.",
+        text: "Alongside this, I taught and developed lesson plans and training sessions for 34 mentors of the specializations department and organized GART Camp, a robotics summer camp where we taught VEX IQ at the American Embassy's community center to younger students. Through the camp, I hoped to further share my passion for building and programming with students who were just beginning to discover it.",
+      },
+      {
+        title: "GART Expo.",
+        text: "As well as training and competing, GART Expo is an annual event organized to spread robotics by hosting STEM activities and inviting teams from Vietnam, featuring robotics showcases, interactive activities, and of course the Mock GART competition.",
+      },
     ],
-    highlights: [
-      "Engineered full parametric CAD models with kinetic mechanism motion studies before cutting raw stock.",
-      "Designed high-throughput active intake rollers and low-friction dual-stage linear slides.",
-      "Achieved undefeated 16-match winning streak at FTC Vietnam National Championship 2024.",
-      "Secured prestigious Design Award for innovative robot chassis, intake reliability, and structural rigidity.",
-      "Represented Vietnam at FIRST Championship Houston, reaching Finalist Alliance Runner-Up in the Edison Division.",
+    takeaway:
+      "At GART, I learned the first steps of being an engineer. These experiences became the first building blocks for me to continue developing and pursuing my passion for engineering in the future.",
+    metrics: [
+      {
+        label: "FTC National Round",
+        value: "16-Match Winning Streak & Design Award",
+      },
+      {
+        label: "World Championship",
+        value: "Edison Division Finalist Alliance",
+      },
+      { label: "Department Leadership", value: "Led 40 Members" },
+      { label: "Mentoring & Outreach", value: "34 Mentors & US Embassy Camp" },
     ],
-    videoSrc: "/videos/ftc-action.mp4",
-    videoCaption: "FTC Match Action & High-Speed Intake Testing",
-    col1Image1: "/images/projects/gart/robot-01.jpg",
-    col1Image2: "/images/projects/gart/thanh-hoa-scrimmage.jpg",
-    col2Image: "/images/projects/gart/national-champion.jpg",
-    cadUrl: "https://www.firstinspires.org/robotics/ftc",
-    liveUrl: "https://www.firstinspires.org/robotics/ftc",
-    externalLabel: "FIRST Tech Challenge",
+    mediaItems: [
+      {
+        id: "video",
+        label: "Match Action Video",
+        type: "video",
+        src: "/videos/ftc-action.mp4",
+        caption: "FTC Match Action & High-Speed Intake Testing",
+        tag: "Video",
+      },
+      {
+        id: "mock",
+        label: "Mock GART (Blue Team)",
+        type: "image",
+        src: "/images/projects/gart/robot-01.jpg",
+        caption: "Mock GART Blue Team robot design and CAD mechanism",
+        tag: "Mock GART",
+      },
+      {
+        id: "scrimmage",
+        label: "FTC – Thanh Hoa Scrimmage",
+        type: "image",
+        src: "/images/projects/gart/thanh-hoa-scrimmage.jpg",
+        caption: "Pre-season tournament scrimmage testing and mechanism tuning",
+        tag: "Scrimmage",
+      },
+      {
+        id: "national",
+        label: "FTC – National",
+        type: "image",
+        src: "/images/projects/gart/national-champion.jpg",
+        caption:
+          "National Champions with a 16-match winning streak and Design Award",
+        tag: "National Champ",
+      },
+      {
+        id: "worlds",
+        label: "FTC – Worlds",
+        type: "image",
+        src: "/images/journey/gart/worlds.jpg",
+        caption:
+          "Competing in Houston, Texas — Finalist Alliance in Edison Division",
+        tag: "Houston Worlds",
+      },
+      {
+        id: "recognition",
+        label: "Deputy PM Recognition",
+        type: "image",
+        src: "/images/journey/gart/banner.jpg",
+        caption: "Recognition and national honors for team excellence",
+        tag: "Recognition",
+      },
+      {
+        id: "community",
+        label: "GART Expo · Camp · Training",
+        type: "image",
+        src: "/images/journey/gart/camp.jpg",
+        caption:
+          "Teaching VEX IQ robotics at American Center and hosting GART Expo",
+        tag: "Camp & Expo",
+      },
+    ],
+    externalLinks: [
+      {
+        label: "FIRST Tech Challenge",
+        url: "https://www.firstinspires.org/robotics/ftc",
+      },
+    ],
   },
   {
     number: "02",
-    category: "IoT & Environmental Hardware",
+    subGroup: "Devices that solve my concerns",
+    category: "Environmental Hardware",
     categoryColor: "#10B981",
-    title: "EnviroTrack: IoT Air Quality Network",
-    role: "Team Lead & Hardware System Designer",
-    challenge:
-      "Hanoi faces severe PM2.5 air pollution, yet existing monitoring stations are sparse, stationary, and expensive. Public awareness lacks granular neighborhood real-time data.",
-    solution:
-      "Built autonomous, modular sensor units integrating PMS7003 laser particle sensors, LilyGO ESP32, and dual-failover GSM 4G/Wi-Fi telemetry with 1D CNN threshold forecasting.",
-    summary:
-      "Engineered an autonomous IoT air-quality monitoring system with 25+ live sensor units deployed across Hanoi and Nam Dinh, presented at WICO Korea with gold recognition.",
-    fullNarrative:
-      "I wanted to use competitive robotics experience to tackle Hanoi’s most pressing environmental issue: air pollution. Leading a 3-member team, we engineered EnviroTrack to measure real-time air quality, log metrics publicly to ThingSpeak cloud, and alert citizens via mobile forecasts. At WICO in Seoul, feedback from judges inspired us to transition from a bulky prototype into ultra-compact, modular, independent units. We fabricated and deployed 25+ refined devices in public produce markets, train stations in Hanoi, and rural communes in Nam Dinh.",
-    telemetry: [
-      { label: "MCU Controller", value: "LilyGO T-Call ESP32" },
-      { label: "Optical Sensors", value: "Plantower PMS7003 & SHT30" },
-      { label: "Telemetry Link", value: "GSM 4G LTE & Wi-Fi Dual Failover" },
-      { label: "Live Deployment", value: "25+ Public Urban & Rural Nodes" },
+    title: "EnviroTrack",
+    tagline: "Autonomous Air Quality Monitoring Network",
+    excerpt:
+      "I wanted to use what I learned from competitive robots to contribute to Hanoi's most pressing problem: air pollution. Leading a team of 3, we built EnviroTrack to measure real-time air quality publicly with a predictive mobile app. Challenged at WICO to scale beyond the lab, we redesigned it into 25+ independent devices deployed across Hanoi and Nam Dinh.",
+    storyParagraphs: [
+      {
+        text: "I want to use what I learned from competitive robots to contribute to Hanoi's most pressing problem: air pollution. I led a team of 3 and built EnviroTrack, a system that measures air quality, displays real-time data publicly, with a mobile app for alerts and predictions.",
+      },
+      {
+        text: "At WICO, experts challenged us to think beyond a complete system and consider how it could actually be deployed at scale and in real situations. We redesigned it into a smaller, independent unit and built 25+ refined devices for deployment in markets and train stations across Hanoi and communes in Nam Dinh, in the hope that people can more easily be aware of the air quality around them.",
+      },
     ],
-    highlights: [
-      "Custom LilyGO ESP32 low-power firmware with automatic deep sleep and sensor warm-up cycles.",
-      "Weatherproof 3D-printed and laser-cut modular enclosures engineered for 24/7 outdoor operation.",
-      "Implemented 1D CNN time-series forecasting model predicting pollution spikes up to 4 hours ahead.",
-      "Awarded Gold Medal at WICO (World Invention Creativity Olympic) 2024 in Seoul, South Korea.",
-      "Live field deployments in Hanoi railway hubs, local marketplaces, and rural Nam Dinh communes.",
+    metrics: [
+      { label: "Live Field Deployment", value: "25+ Refined Devices Deployed" },
+      { label: "Coverage Areas", value: "Hanoi Markets & Stations, Nam Dinh" },
+      { label: "Team Structure", value: "Led Team of 3" },
+      { label: "International Recognition", value: "WICO Exhibition Award" },
     ],
-    videoSrc: "/videos/envirotrack-demo.mp4",
-    videoCaption: "Live System Telemetry & Field Deployment Demo",
-    col1Image1: "/images/projects/envirotrack/device-01.jpg",
-    col1Image2: "/images/projects/envirotrack/poster.jpg",
-    col2Image: "/images/projects/envirotrack/deployment.jpg",
-    cadUrl: "https://thingspeak.com",
-    liveUrl: "https://thingspeak.com",
-    externalLabel: "ThingSpeak Cloud Portal",
+    mediaItems: [
+      {
+        id: "video",
+        label: "Telemetry Demo Video",
+        type: "video",
+        src: "/videos/envirotrack-demo.mp4",
+        caption: "Live air quality telemetry logging and cloud monitoring",
+        tag: "Video",
+      },
+      {
+        id: "device",
+        label: "Refined Device Unit",
+        type: "image",
+        src: "/images/projects/envirotrack/device-01.jpg",
+        caption: "Independent modular air quality sensor hardware unit",
+        tag: "Device",
+      },
+      {
+        id: "poster",
+        label: "WICO Poster & Booth",
+        type: "image",
+        src: "/images/projects/envirotrack/poster.jpg",
+        caption: "Research presentation poster and booth at WICO in Seoul",
+        tag: "Poster",
+      },
+      {
+        id: "deployment",
+        label: "Public Field Deployment",
+        type: "image",
+        src: "/images/projects/envirotrack/deployment.jpg",
+        caption:
+          "Live field installation in public markets and transit stations",
+        tag: "Deployment",
+      },
+    ],
+    externalLinks: [
+      { label: "ThingSpeak Telemetry", url: "https://thingspeak.com" },
+    ],
   },
   {
     number: "03",
+    subGroup: "Devices that solve my concerns",
     category: "Aerospace & Marine Robotics",
     categoryColor: "#06B6D4",
-    title: "Conrad Challenge — Autonomous Underwater Vehicle",
-    role: "Electricals & Mechanical CAD Lead",
-    challenge:
-      "Mapping aquatic microplastic pollution currently relies on tedious manual bottle sampling and costly laboratory spectrometry, preventing large-scale depth-resolved geospatial surveying.",
-    solution:
-      "Engineered an autonomous underwater robot (AUV) utilizing polarized optical scattering to detect microplastic concentrations in-situ, balanced with precision depth control.",
-    summary:
-      "Engineered an autonomous underwater robot (AUV) equipped with optical polarization sensing to map microplastic density in waterways, selected for the Global Innovation Summit at NASA Johnson Space Center.",
-    fullNarrative:
-      "EnviroTrack proved we could tackle environmental challenges, but I wanted to push into harsher, more complex physical dynamics. Our team targeted microplastic pollution in waterways. I served as Electrical and Mechanical CAD Lead. Building an underwater robot was radically different from wheeled robotics: we had to balance buoyancy, center of gravity (COG), dynamic waterproofing, depth pressure, and optical polarization sensing simultaneously. Over 4 prototype iterations, we engineered a functional AUV that earned selection as 1 of 25 teams globally from 1,000+ entries to pitch at NASA Johnson Space Center Starship Gallery.",
-    telemetry: [
-      { label: "Pressure Hull", value: "Sealed Acrylic & 6061-T6 Alum" },
-      { label: "Propulsion", value: "Brushless DC with Bidirectional ESCs" },
+    title: "Conrad Challenge",
+    tagline: "Autonomous Underwater Vehicle (AUV) for Microplastic Mapping",
+    excerpt:
+      "EnviroTrack inspired me to tackle more complex environmental challenges: the lack of accessible, large-scale data on microplastic pollution. We developed an autonomous underwater vehicle capable of diving and mapping microplastics in waterways. Over 4 prototype iterations, we were selected as 1 of 25 teams from 1,000+ globally to pitch at NASA Johnson Space Center.",
+    storyParagraphs: [
       {
-        label: "Optical Sensing",
-        value: "Polarized Camera & Particle Scatter",
+        text: "EnviroTrack made me realize that I wanted to keep working on environmental problems, but I also wanted to challenge myself with something more complex. That led me to the Conrad Challenge, where our team explored a new problem: the lack of accessible, large-scale data on microplastic pollution. (Researchers often rely on small samples taken one by one and expensive lab testing, making it difficult to cover large areas or different depths.)",
       },
-      { label: "NASA Summit", value: "Top 25 Global Finalist Teams" },
+      {
+        text: "We developed an autonomous underwater vehicle capable of diving and mapping microplastic pollution across lakes and coastal areas. I was in charge of the electrical system and CAD design, which was very different from the robots I had built before: I had to account for buoyancy, COG, waterproofing, diving, signal transmission, and accurate measurement all at once.",
+      },
+      {
+        text: "After 4 iterations, we built a working prototype and became one of 25 teams selected from 1,000+ teams to pitch our product at the Conrad Global Innovation Challenge at Johnson Space Center.",
+      },
     ],
-    highlights: [
-      "Designed hydrodynamic aluminum chassis and acrylic cylindrical pressure vessel rated for water depth.",
-      "Calculated center-of-buoyancy versus center-of-gravity to guarantee positive static righting moments.",
-      "Developed custom power distribution boards, brushless thruster ESCs, and sub-surface telemetry.",
-      "Integrated polarized optical camera system detecting microplastic particles via circular scatter signatures.",
-      "Selected to present at NASA Johnson Space Center Starship Gallery to astronauts and aerospace leaders.",
+    metrics: [
+      { label: "Global Selection", value: "Top 25 Teams from 1,000+ Globally" },
+      { label: "Pitch Venue", value: "NASA Johnson Space Center" },
+      { label: "Engineering Role", value: "Electrical System & CAD Design" },
+      { label: "Design Iterations", value: "4 Prototype Iterations" },
     ],
-    videoSrc: "/videos/conrad-auv.mp4",
-    videoCaption: "Sub-surface Hydrodynamic Testing & Navigation",
-    col1Image1: "/images/projects/conrad/cad-design.jpg",
-    col1Image2: "/images/projects/conrad/electricals.jpg",
-    col2Image: "/images/projects/conrad/prototype.jpg",
-    cadUrl: "https://ideon.skyhi.vn/about",
-    liveUrl: "https://ideon.skyhi.vn/about",
-    externalLabel: "Ideon Project Portal",
+    mediaItems: [
+      {
+        id: "video",
+        label: "AUV Subsea Testing",
+        type: "video",
+        src: "/videos/conrad-auv.mp4",
+        caption: "Autonomous underwater vehicle diving and maneuvering test",
+        tag: "Video",
+      },
+      {
+        id: "cad",
+        label: "CAD Hull Architecture",
+        type: "image",
+        src: "/images/projects/conrad/cad-design.jpg",
+        caption:
+          "Subsea pressure hull CAD design, buoyancy and COG calculations",
+        tag: "CAD Model",
+      },
+      {
+        id: "electricals",
+        label: "Electrical System",
+        type: "image",
+        src: "/images/projects/conrad/electricals.jpg",
+        caption: "Custom power distribution, subsea motor ESCs and telemetry",
+        tag: "Electricals",
+      },
+      {
+        id: "prototype",
+        label: "Working Prototype",
+        type: "image",
+        src: "/images/projects/conrad/prototype.jpg",
+        caption:
+          "Fourth-generation functional AUV prototype ready for aquatic trials",
+        tag: "Prototype",
+      },
+      {
+        id: "summit",
+        label: "NASA Johnson Space Center",
+        type: "image",
+        src: "/images/marquee/conrad/conrad-summit.png",
+        caption:
+          "Presenting at Conrad Global Innovation Challenge at NASA JSC Starship Gallery",
+        tag: "NASA Summit",
+      },
+    ],
+    externalLinks: [
+      { label: "Ideon Project Portal", url: "https://ideon.skyhi.vn/about" },
+      { label: "Conrad Challenge", url: "https://www.conradchallenge.org" },
+    ],
   },
 ];
 
@@ -172,6 +321,7 @@ interface CardProps {
   index: number;
   onOpenDetails: (project: Project) => void;
   onPreviewImage: (data: ProjectPreviewData) => void;
+  cardRef?: (el: HTMLDivElement | null) => void;
 }
 
 const ProjectCard: React.FC<CardProps> = ({
@@ -179,433 +329,243 @@ const ProjectCard: React.FC<CardProps> = ({
   index,
   onOpenDetails,
   onPreviewImage,
+  cardRef,
 }) => {
-  const [activeMediaTab, setActiveMediaTab] = useState<
-    "video" | "cad" | "field"
-  >("video");
-  const [isStoryExpanded, setIsStoryExpanded] = useState(false);
+  const [activeMediaId, setActiveMediaId] = useState<string>(
+    project.mediaItems[0]?.id || "video",
+  );
 
-  const projectImages = [
-    {
-      src: project.col1Image1,
-      label: `${project.title} — CAD Architecture & Mechanism Spec`,
-    },
-    {
-      src: project.col2Image,
-      label: `${project.title} — Field & Deployment Evidence`,
-    },
-    {
-      src: project.col1Image2,
-      label: `${project.title} — Competition Live Footage Snapshot`,
-    },
-  ];
+  const activeMedia =
+    project.mediaItems.find((m) => m.id === activeMediaId) ||
+    project.mediaItems[0];
+
+  const previewImages = project.mediaItems
+    .filter((m) => m.type === "image")
+    .map((m) => ({
+      src: m.src,
+      label: `${project.title} — ${m.label}: ${m.caption}`,
+    }));
 
   return (
     <div
-      className="sticky w-full flex justify-center"
+      ref={cardRef}
+      className="sticky w-full flex justify-center will-change-transform"
       style={{
-        top: `calc(5rem + ${index * 24}px)`,
+        top: `calc(4.5rem + ${index * 24}px)`,
         zIndex: 10 + index,
       }}
     >
-      <div className="w-full max-w-6xl rounded-[28px] sm:rounded-[38px] md:rounded-[46px] border-2 border-[#D7E2EA]/30 bg-[#0C0C0C] p-4 sm:p-6 md:p-8 flex flex-col gap-6 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] backdrop-blur-xl relative overflow-hidden">
+      <div
+        className="card-content-box w-full max-w-6xl rounded-[26px] sm:rounded-[36px] md:rounded-[44px] border border-black/[0.08] bg-white p-5 sm:p-6 md:p-8 flex flex-col gap-5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden transition-all duration-300 hover:border-black/15 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)]"
+        style={{
+          transformOrigin: "center top",
+          transition:
+            "filter 0.2s ease-out, opacity 0.2s ease-out, transform 0.2s ease-out",
+        }}
+      >
+        {/* Subtle Ambient Glow */}
+        <div
+          className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[110px] pointer-events-none opacity-20 -z-10"
+          style={{ backgroundColor: project.categoryColor }}
+        />
+
         {/* Top Header Row */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#D7E2EA]/20">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-black/[0.06]">
           <div className="flex items-center gap-4 sm:gap-6">
             <span
-              className="font-black text-[#D7E2EA] leading-none tracking-tighter"
-              style={{ fontSize: "clamp(2.5rem, 5vw, 4.2rem)" }}
+              className="font-black text-slate-900 leading-none tracking-tighter"
+              style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}
             >
               {project.number}
             </span>
             <div className="flex flex-col">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
+                  {project.subGroup}
+                </span>
+                <span className="text-xs text-slate-300 hidden sm:inline">
+                  •
+                </span>
                 <span
-                  className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-white"
+                  className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider"
                   style={{
-                    backgroundColor: `${project.categoryColor}33`,
+                    backgroundColor: `${project.categoryColor}18`,
                     color: project.categoryColor,
+                    border: `1px solid ${project.categoryColor}35`,
                   }}
                 >
                   {project.category}
                 </span>
-                <span className="text-xs text-white/40 hidden sm:inline">
-                  •
-                </span>
-                <span className="text-xs text-white/60 font-light hidden sm:inline">
-                  {project.role}
-                </span>
               </div>
-              <h3 className="text-[#D7E2EA] font-semibold text-lg sm:text-2xl md:text-3xl tracking-tight mt-1">
+              <h3 className="text-slate-900 font-bold text-xl sm:text-2xl md:text-3xl tracking-tight mt-1">
                 {project.title}
               </h3>
+              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">
+                {project.tagline}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <LiveProjectButton
+          {/* Action Button: Open Full Details Popup */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
               onClick={() => onOpenDetails(project)}
-              label="Inspect Dossier"
-            />
-          </div>
-        </div>
-
-        {/* Media Switching Tabs — NO DELAY, NO ANIMATION */}
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveMediaTab("video")}
-              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer ${
-                activeMediaTab === "video"
-                  ? "bg-purple-600 text-white font-medium"
-                  : "bg-white/10 text-white/70 hover:text-white"
-              }`}
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm text-slate-900 bg-black/[0.04] hover:bg-black/[0.08] border border-black/10 hover:border-black/20 transition-all cursor-pointer shadow-sm group"
             >
-              <Play
-                size={12}
-                className={
-                  activeMediaTab === "video" ? "text-white" : "text-purple-400"
-                }
+              <BookOpen
+                size={14}
+                className="text-purple-600 group-hover:scale-110 transition-transform"
               />
-              <span>Live Action Footage</span>
+              <span>View Details</span>
+              <ArrowRight
+                size={13}
+                className="text-slate-500 group-hover:translate-x-0.5 transition-transform"
+              />
             </button>
-            <button
-              type="button"
-              onClick={() => setActiveMediaTab("cad")}
-              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer ${
-                activeMediaTab === "cad"
-                  ? "bg-purple-600 text-white font-medium"
-                  : "bg-white/10 text-white/70 hover:text-white"
-              }`}
-            >
-              <Wrench size={12} />
-              <span>CAD & Mechanism</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveMediaTab("field")}
-              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer ${
-                activeMediaTab === "field"
-                  ? "bg-purple-600 text-white font-medium"
-                  : "bg-white/10 text-white/70 hover:text-white"
-              }`}
-            >
-              <Radio size={12} />
-              <span>Field & Deployment</span>
-            </button>
-          </div>
-
-          {/* Quick Telemetry Indicators */}
-          <div className="hidden lg:flex items-center gap-3 text-[11px] text-white/50 font-mono">
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              {project.telemetry[0].label}: {project.telemetry[0].value}
-            </span>
-            <span>•</span>
-            <span className="text-purple-300 font-medium">
-              {project.telemetry[2].value}
-            </span>
           </div>
         </div>
 
-        {/* Main Media & Engineering Breakdown Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-          {/* Left Column: Media Stage with Technical Viewfinder Corner Brackets */}
-          <div className="lg:col-span-7 flex flex-col gap-3">
-            <div className="relative rounded-[22px] sm:rounded-[28px] overflow-hidden border border-white/15 bg-black h-[240px] sm:h-[300px] md:h-[340px]">
-              {/* L-shaped Viewfinder Corner Brackets (Static, No Animation) */}
-              <div className="absolute top-3 left-3 w-3.5 h-3.5 border-t-2 border-l-2 border-white/70 z-20 pointer-events-none" />
-              <div className="absolute top-3 right-3 w-3.5 h-3.5 border-t-2 border-r-2 border-white/70 z-20 pointer-events-none" />
-              <div className="absolute bottom-3 left-3 w-3.5 h-3.5 border-b-2 border-l-2 border-white/70 z-20 pointer-events-none" />
-              <div className="absolute bottom-3 right-3 w-3.5 h-3.5 border-b-2 border-r-2 border-white/70 z-20 pointer-events-none" />
+        {/* Compact Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+          {/* Left Column: Media Screen */}
+          <div className="lg:col-span-6 flex flex-col gap-2.5">
+            {/* Main Viewport */}
+            <div className="relative rounded-[18px] sm:rounded-[22px] overflow-hidden border border-black/10 bg-slate-950 h-[200px] sm:h-[240px] md:h-[260px] shadow-sm">
+              {/* Technical Viewfinder Corner Brackets */}
+              <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 border-white/70 z-20 pointer-events-none" />
+              <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 border-white/70 z-20 pointer-events-none" />
+              <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 border-white/70 z-20 pointer-events-none" />
+              <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 border-white/70 z-20 pointer-events-none" />
 
-              {/* INSTANT Media Switch Without Lag or Animation */}
-              {activeMediaTab === "video" && project.videoSrc ? (
-                <div className="w-full h-full relative flex items-center justify-center bg-black">
+              {/* Active Media Renderer */}
+              {activeMedia.type === "video" ? (
+                <div className="w-full h-full relative flex items-center justify-center bg-black group">
                   <video
-                    src={project.videoSrc}
+                    src={activeMedia.src}
                     autoPlay
                     loop
                     muted
                     playsInline
                     className="w-full h-full object-cover"
                   />
-                </div>
-              ) : activeMediaTab === "cad" ? (
-                <div
-                  className="w-full h-full relative cursor-zoom-in group"
-                  onClick={() =>
-                    onPreviewImage({
-                      title: project.title,
-                      projectNumber: project.number,
-                      category: project.category,
-                      images: projectImages,
-                      initialIndex: 0,
-                    })
-                  }
-                >
-                  <img
-                    src={project.col1Image1}
-                    alt={`${project.title} CAD`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                  <div className="absolute bottom-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/80 hover:bg-black text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/20 shadow-lg pointer-events-none">
-                    <Maximize2 size={12} className="text-cyan-400" />
-                    <span>Click để preview</span>
+                  <div className="absolute bottom-2 left-3 right-3 z-20 pointer-events-none flex items-center justify-between">
+                    <span className="text-[10px] font-mono bg-black/80 px-2 py-0.5 rounded text-white/90 border border-white/15">
+                      {activeMedia.caption}
+                    </span>
                   </div>
                 </div>
               ) : (
                 <div
                   className="w-full h-full relative cursor-zoom-in group"
-                  onClick={() =>
+                  onClick={() => {
+                    const imgIndex = previewImages.findIndex(
+                      (img) => img.src === activeMedia.src,
+                    );
                     onPreviewImage({
                       title: project.title,
                       projectNumber: project.number,
                       category: project.category,
-                      images: projectImages,
-                      initialIndex: 1,
-                    })
-                  }
+                      images: previewImages,
+                      initialIndex: imgIndex >= 0 ? imgIndex : 0,
+                    });
+                  }}
                 >
                   <img
-                    src={project.col2Image}
-                    alt={`${project.title} Field`}
-                    className="w-full h-full object-cover"
+                    src={activeMedia.src}
+                    alt={activeMedia.label}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                  <div className="absolute bottom-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/80 hover:bg-black text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/20 shadow-lg pointer-events-none">
-                    <Maximize2 size={12} className="text-cyan-400" />
-                    <span>Click để preview</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+                  <div className="absolute bottom-2 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
+                    <span className="text-[10px] font-mono bg-black/80 px-2 py-0.5 rounded text-white/90 border border-white/15 line-clamp-1">
+                      {activeMedia.caption}
+                    </span>
+                    <span className="text-[9px] font-mono bg-purple-600/90 text-white px-1.5 py-0.5 rounded flex items-center gap-1">
+                      <Maximize2 size={9} /> Zoom
+                    </span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Quick Preview Thumbnail Strip (Clicking switches active media, hover icon opens full preview) */}
-            <div className="grid grid-cols-3 gap-2">
-              <div className="relative group">
-                <button
-                  type="button"
-                  onClick={() => setActiveMediaTab("video")}
-                  className={`w-full relative rounded-xl overflow-hidden aspect-video border cursor-pointer ${
-                    activeMediaTab === "video"
-                      ? "border-purple-400"
-                      : "border-white/10 opacity-70"
-                  }`}
-                >
-                  <img
-                    src={project.col1Image2}
-                    alt="Video Preview"
-                    className="w-full h-full object-cover"
-                  />
-                  <span className="absolute bottom-1 left-1.5 text-[8px] font-mono uppercase bg-black/80 px-1 py-0.5 rounded text-white flex items-center gap-1">
-                    <Play size={8} /> Footage
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onPreviewImage({
-                      title: project.title,
-                      projectNumber: project.number,
-                      category: project.category,
-                      images: projectImages,
-                      initialIndex: 2,
-                    });
-                  }}
-                  className="absolute top-1 right-1 z-10 p-1 rounded bg-black/80 hover:bg-purple-600 text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  title="Preview ảnh footage"
-                >
-                  <Maximize2 size={10} />
-                </button>
-              </div>
-
-              <div className="relative group">
-                <button
-                  type="button"
-                  onClick={() => setActiveMediaTab("cad")}
-                  className={`w-full relative rounded-xl overflow-hidden aspect-video border cursor-pointer ${
-                    activeMediaTab === "cad"
-                      ? "border-purple-400"
-                      : "border-white/10 opacity-70"
-                  }`}
-                >
-                  <img
-                    src={project.col1Image1}
-                    alt="CAD Preview"
-                    className="w-full h-full object-cover"
-                  />
-                  <span className="absolute bottom-1 left-1.5 text-[8px] font-mono uppercase bg-black/80 px-1 py-0.5 rounded text-white flex items-center gap-1">
-                    <Wrench size={8} /> CAD Spec
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onPreviewImage({
-                      title: project.title,
-                      projectNumber: project.number,
-                      category: project.category,
-                      images: projectImages,
-                      initialIndex: 0,
-                    });
-                  }}
-                  className="absolute top-1 right-1 z-10 p-1 rounded bg-black/80 hover:bg-purple-600 text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  title="Preview ảnh CAD"
-                >
-                  <Maximize2 size={10} />
-                </button>
-              </div>
-
-              <div className="relative group">
-                <button
-                  type="button"
-                  onClick={() => setActiveMediaTab("field")}
-                  className={`w-full relative rounded-xl overflow-hidden aspect-video border cursor-pointer ${
-                    activeMediaTab === "field"
-                      ? "border-purple-400"
-                      : "border-white/10 opacity-70"
-                  }`}
-                >
-                  <img
-                    src={project.col2Image}
-                    alt="Deployment Preview"
-                    className="w-full h-full object-cover"
-                  />
-                  <span className="absolute bottom-1 left-1.5 text-[8px] font-mono uppercase bg-black/80 px-1 py-0.5 rounded text-white flex items-center gap-1">
-                    <Radio size={8} /> Field Deployment
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onPreviewImage({
-                      title: project.title,
-                      projectNumber: project.number,
-                      category: project.category,
-                      images: projectImages,
-                      initialIndex: 1,
-                    });
-                  }}
-                  className="absolute top-1 right-1 z-10 p-1 rounded bg-black/80 hover:bg-purple-600 text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  title="Preview ảnh thực địa"
-                >
-                  <Maximize2 size={10} />
-                </button>
-              </div>
+            {/* Event Media Switcher Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+              {project.mediaItems.slice(0, 5).map((media) => {
+                const isActive = activeMediaId === media.id;
+                return (
+                  <button
+                    key={media.id}
+                    type="button"
+                    onClick={() => setActiveMediaId(media.id)}
+                    className={`px-2.5 py-1 rounded-full text-[11px] whitespace-nowrap cursor-pointer transition-all ${
+                      isActive
+                        ? "text-white font-medium shadow-sm"
+                        : "bg-black/[0.04] hover:bg-black/[0.08] text-slate-600 hover:text-slate-900 border border-black/[0.06]"
+                    }`}
+                    style={{
+                      backgroundColor: isActive
+                        ? project.categoryColor
+                        : undefined,
+                    }}
+                  >
+                    {media.tag || media.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right Column: EXPANDED Engineering Content On The Card */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
-            {/* Problem & Solution Card */}
-            <div className="p-4 rounded-2xl bg-[#141414] border border-white/10 flex flex-col gap-2.5">
-              <div>
-                <span className="text-[10px] uppercase font-mono tracking-widest text-purple-400 block mb-1">
-                  Problem Context
-                </span>
-                <p className="text-xs sm:text-[13px] text-[#D7E2EA]/80 font-light leading-relaxed">
-                  {project.challenge}
-                </p>
-              </div>
+          {/* Right Column: Excerpt, Metrics & Popup Trigger */}
+          <div className="lg:col-span-6 flex flex-col justify-between gap-3.5">
+            {/* Story Excerpt from content.md */}
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal line-clamp-4">
+              {project.excerpt}
+            </p>
 
-              <div className="pt-2 border-t border-white/10">
-                <span className="text-[10px] uppercase font-mono tracking-widest text-emerald-400 block mb-1">
-                  Engineering Solution
-                </span>
-                <p className="text-xs sm:text-[13px] text-[#D7E2EA] font-normal leading-relaxed">
-                  {project.solution}
-                </p>
-              </div>
-            </div>
-
-            {/* Key Technical Highlights (Directly on Card) */}
-            <div className="p-4 rounded-2xl bg-[#141414] border border-white/10 flex flex-col gap-2">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-cyan-400 flex items-center gap-1.5">
-                <Trophy size={13} />
-                <span>Key Technical Breakthroughs</span>
-              </span>
-              <ul className="space-y-1.5">
-                {project.highlights.slice(0, 3).map((hl, hlIdx) => (
-                  <li
-                    key={hlIdx}
-                    className="flex items-start gap-2 text-xs text-[#D7E2EA]/90 font-light"
-                  >
-                    <CheckCircle2
-                      size={13}
-                      className="text-purple-400 flex-shrink-0 mt-0.5"
-                    />
-                    <span className="leading-snug">{hl}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Telemetry Grid */}
-            <div className="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-[#141414] border border-white/10 text-xs">
-              {project.telemetry.map((t, tidx) => (
+            {/* Key Factual Metrics */}
+            <div className="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-white/70 backdrop-blur-md border border-black/[0.06] text-xs shadow-sm">
+              {project.metrics.map((m, mIdx) => (
                 <div
-                  key={tidx}
-                  className="flex flex-col border-l border-white/10 pl-2"
+                  key={mIdx}
+                  className="flex flex-col border-l-2 pl-2"
+                  style={{ borderColor: `${project.categoryColor}80` }}
                 >
-                  <span className="text-[9px] text-white/50 uppercase font-mono">
-                    {t.label}
+                  <span className="text-[9px] text-slate-500 uppercase font-mono">
+                    {m.label}
                   </span>
-                  <span className="text-white font-medium text-xs truncate">
-                    {t.value}
+                  <span className="text-slate-900 font-semibold text-xs mt-0.5 truncate">
+                    {m.value}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* Expand Full Story Button directly on the card */}
-            <div className="flex items-center justify-between gap-3 pt-1">
+            {/* Bottom Actions Row */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-black/[0.06]">
               <button
                 type="button"
-                onClick={() => setIsStoryExpanded(!isStoryExpanded)}
-                className="inline-flex items-center gap-1.5 text-xs text-purple-400 hover:text-purple-300 font-medium cursor-pointer"
+                onClick={() => onOpenDetails(project)}
+                className="inline-flex items-center gap-1.5 text-xs text-purple-600 hover:text-purple-700 font-medium cursor-pointer"
               >
-                <span>
-                  {isStoryExpanded
-                    ? "Hide Backstory"
-                    : "Read Full Engineering Backstory"}
-                </span>
-                {isStoryExpanded ? (
-                  <ChevronUp size={14} />
-                ) : (
-                  <ChevronDown size={14} />
-                )}
+                <span>Read Full Story & View Dossier</span>
+                <ArrowRight size={13} />
               </button>
 
-              {project.liveUrl && (
+              {project.externalLinks.length > 0 && (
                 <a
-                  href={project.liveUrl}
+                  href={project.externalLinks[0].url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-[#D7E2EA]/70 hover:text-white"
+                  className="inline-flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   <ExternalLink size={12} />
-                  <span>{project.externalLabel || "Portal"}</span>
+                  <span>{project.externalLinks[0].label}</span>
                 </a>
               )}
             </div>
           </div>
         </div>
-
-        {/* Expanded Backstory Container On Card */}
-        {isStoryExpanded && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#141414] border border-purple-500/20 text-xs sm:text-sm text-[#D7E2EA]/90 leading-relaxed font-light">
-            <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">
-              Extended Engineering Narrative
-            </span>
-            <p>{project.fullNarrative}</p>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -613,22 +573,36 @@ const ProjectCard: React.FC<CardProps> = ({
 
 export const ProjectsSection: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [modalMediaId, setModalMediaId] = useState<string>("video");
   const [previewData, setPreviewData] = useState<ProjectPreviewData | null>(
     null,
   );
   const [previewIndex, setPreviewIndex] = useState<number>(0);
+  const [activeFilter, setActiveFilter] = useState<
+    "all" | "robotics" | "devices"
+  >("all");
 
-  // Keyboard navigation for image preview lightbox (instant, no lag)
+  // Sync modal media when a project is selected
   useEffect(() => {
-    if (!previewData) return;
+    if (selectedProject) {
+      setModalMediaId(selectedProject.mediaItems[0]?.id || "video");
+    }
+  }, [selectedProject]);
+
+  // Keyboard navigation for image preview lightbox and details modal
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setPreviewData(null);
-      } else if (e.key === "ArrowLeft") {
+        if (previewData) {
+          setPreviewData(null);
+        } else if (selectedProject) {
+          setSelectedProject(null);
+        }
+      } else if (previewData && e.key === "ArrowLeft") {
         setPreviewIndex((prev) =>
           prev === 0 ? previewData.images.length - 1 : prev - 1,
         );
-      } else if (e.key === "ArrowRight") {
+      } else if (previewData && e.key === "ArrowRight") {
         setPreviewIndex((prev) =>
           prev === previewData.images.length - 1 ? 0 : prev + 1,
         );
@@ -636,41 +610,151 @@ export const ProjectsSection: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [previewData]);
+  }, [previewData, selectedProject]);
 
   const handleOpenPreview = (data: ProjectPreviewData) => {
     setPreviewData(data);
     setPreviewIndex(data.initialIndex);
   };
 
+  const filteredProjects = projects.filter((p) => {
+    if (activeFilter === "robotics") return p.subGroup.includes("Robotics");
+    if (activeFilter === "devices") return p.subGroup.includes("Devices");
+    return true;
+  });
+
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Scroll effect: blur and dim cards underneath as user scrolls down the stack
+  useEffect(() => {
+    let ticking = false;
+
+    const updateCardBlur = () => {
+      const total = filteredProjects.length;
+      if (total <= 1) return;
+
+      for (let i = 0; i < total; i++) {
+        const cardEl = cardRefs.current[i];
+        if (!cardEl) continue;
+
+        const innerEl = cardEl.querySelector(".card-content-box") as HTMLElement;
+        if (!innerEl) continue;
+
+        // The topmost / last card in the stack never gets covered
+        if (i === total - 1) {
+          innerEl.style.filter = "blur(0px)";
+          innerEl.style.opacity = "1";
+          innerEl.style.transform = "scale(1)";
+          innerEl.style.pointerEvents = "auto";
+          continue;
+        }
+
+        // Check the next card (i + 1)
+        const nextCardEl = cardRefs.current[i + 1];
+        if (!nextCardEl) continue;
+
+        const cardRect = cardEl.getBoundingClientRect();
+        const nextRect = nextCardEl.getBoundingClientRect();
+
+        const baseTop = 72; // ~4.5rem in px
+        const nextStickyTop = baseTop + (i + 1) * 24;
+
+        // Next card starts covering card i when its top reaches card i's bottom
+        const startCoverY = cardRect.bottom;
+        const endCoverY = nextStickyTop;
+        const totalDistance = Math.max(1, startCoverY - endCoverY);
+
+        let progress = 0;
+        if (nextRect.top < startCoverY) {
+          progress = Math.min(
+            1,
+            Math.max(0, (startCoverY - nextRect.top) / totalDistance),
+          );
+        }
+
+        // Check if there is another card (i + 2) covering further
+        let progressNext = 0;
+        if (i + 2 < total) {
+          const nextNextCardEl = cardRefs.current[i + 2];
+          if (nextNextCardEl) {
+            const nextNextRect = nextNextCardEl.getBoundingClientRect();
+            const nextNextStickyTop = baseTop + (i + 2) * 24;
+            const startCoverY2 = nextRect.bottom;
+            if (nextNextRect.top < startCoverY2) {
+              progressNext = Math.min(
+                1,
+                Math.max(
+                  0,
+                  (startCoverY2 - nextNextRect.top) /
+                    Math.max(1, startCoverY2 - nextNextStickyTop),
+                ),
+              );
+            }
+          }
+        }
+
+        const totalProgress = Math.min(1.5, progress + progressNext * 0.5);
+
+        // Apply smooth blur, opacity, and scale to the underneath card
+        const blurAmount = (totalProgress * 7).toFixed(1);
+        const opacityAmount = Math.max(0.25, 1 - totalProgress * 0.55).toFixed(2);
+        const scaleAmount = Math.max(0.93, 1 - totalProgress * 0.05).toFixed(3);
+
+        innerEl.style.filter = `blur(${blurAmount}px)`;
+        innerEl.style.opacity = opacityAmount;
+        innerEl.style.transform = `scale(${scaleAmount})`;
+        innerEl.style.pointerEvents = totalProgress >= 0.9 ? "none" : "auto";
+      }
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateCardBlur);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    updateCardBlur();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [filteredProjects]);
+
   return (
     <section
       id="projects"
-      className="bg-[#0C0C0C] text-[#D7E2EA] px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-36 w-full z-10 relative select-none rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14"
+      className="bg-white text-[#0C0C0C] px-4 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-36 w-full z-10 relative select-none rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 shadow-2xl"
     >
       <div className="max-w-6xl mx-auto">
         {/* Section Heading */}
         <FadeIn delay={0} y={40} duration={0.8}>
-          <div className="text-center mb-16 sm:mb-20 md:mb-24">
-            <span className="text-xs uppercase tracking-widest font-semibold text-cyan-400 block mb-3">
-              Precision Engineering & Applied Robotics
-            </span>
+          <div className="text-center mb-10 sm:mb-14 md:mb-16 flex flex-col items-center">
             <h2
-              className="hero-heading font-black uppercase text-center leading-none tracking-tight"
-              style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
+              className="font-black uppercase text-center leading-none tracking-tight text-[#0C0C0C]"
+              style={{ fontSize: "clamp(2.5rem, 6.5vw, 92px)" }}
             >
-              Projects
+              Projects that grew with me
             </h2>
           </div>
         </FadeIn>
 
-        {/* Stacked Project Cards Container — Buttery Smooth 60fps Native Stacking */}
-        <div className="flex flex-col gap-12 sm:gap-16 pb-20">
-          {projects.map((proj, idx) => (
+        {/* Compact Stacked Project Cards */}
+        <div className="flex flex-col gap-10 sm:gap-14 pb-20">
+          {filteredProjects.map((proj, idx) => (
             <ProjectCard
               key={proj.number}
               project={proj}
               index={idx}
+              cardRef={(el) => {
+                cardRefs.current[idx] = el;
+              }}
               onOpenDetails={(p) => setSelectedProject(p)}
               onPreviewImage={handleOpenPreview}
             />
@@ -678,140 +762,230 @@ export const ProjectsSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Engineering Dossier Modal */}
+      {/* Comprehensive Details Popup Modal */}
       {selectedProject && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-xl"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-fadeIn"
           onClick={() => setSelectedProject(null)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-[#121212] border border-[#D7E2EA]/30 rounded-3xl p-6 sm:p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative"
+            className="bg-[#121212] border border-[#D7E2EA]/30 rounded-3xl p-5 sm:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col gap-6"
           >
-            {/* Close Button */}
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-5 right-5 text-white/50 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
-            >
-              <X size={20} />
-            </button>
-
-            {/* Header info */}
-            <div className="mb-6">
-              <span
-                className="text-xs uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full inline-block mb-3"
-                style={{
-                  backgroundColor: `${selectedProject.categoryColor}33`,
-                  color: selectedProject.categoryColor,
-                }}
-              >
-                {selectedProject.category}
-              </span>
-              <h3 className="text-2xl sm:text-4xl font-bold text-white mb-2">
-                {selectedProject.title}
-              </h3>
-              <p className="text-sm sm:text-base text-purple-400 flex items-center gap-2">
-                <Users size={16} />
-                <span>{selectedProject.role}</span>
-              </p>
-            </div>
-
-            {/* Video preview in modal if available */}
-            {selectedProject.videoSrc && (
-              <div className="relative rounded-2xl overflow-hidden mb-6 aspect-video bg-black border border-white/15">
-                <video
-                  src={selectedProject.videoSrc}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-
-            {/* Problem & Solution Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                <span className="text-[10px] font-mono uppercase text-purple-400 block mb-1">
-                  Problem Encountered
-                </span>
-                <p className="text-xs sm:text-sm text-[#D7E2EA]/90 leading-relaxed">
-                  {selectedProject.challenge}
-                </p>
-              </div>
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                <span className="text-[10px] font-mono uppercase text-emerald-400 block mb-1">
-                  Architectural Solution
-                </span>
-                <p className="text-xs sm:text-sm text-[#D7E2EA]/90 leading-relaxed">
-                  {selectedProject.solution}
-                </p>
-              </div>
-            </div>
-
-            {/* Full Story */}
-            <div className="mb-6">
-              <h4 className="text-xs uppercase tracking-widest font-mono text-cyan-400 mb-2 flex items-center gap-2">
-                <Layers size={14} />
-                <span>Complete Engineering Backstory</span>
-              </h4>
-              <p className="text-[#D7E2EA] font-light leading-relaxed text-sm sm:text-base opacity-90 border-l-2 border-purple-500 pl-4 py-1">
-                {selectedProject.fullNarrative}
-              </p>
-            </div>
-
-            {/* Technical Highlights */}
-            <div className="mb-6">
-              <h4 className="text-xs uppercase tracking-widest font-mono text-cyan-400 mb-3 flex items-center gap-2">
-                <Trophy size={14} />
-                <span>Key Technical Highlights & Field Milestones</span>
-              </h4>
-              <ul className="space-y-2.5">
-                {selectedProject.highlights.map((detail, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-2.5 text-xs sm:text-sm text-[#D7E2EA]/90 font-light"
-                  >
-                    <CheckCircle2
-                      size={15}
-                      className="text-purple-400 flex-shrink-0 mt-0.5"
-                    />
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* External Links Bar */}
-            {selectedProject.liveUrl && (
-              <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-                <a
-                  href={selectedProject.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-medium transition-all"
-                >
-                  <ExternalLink size={14} />
-                  <span>
-                    Visit {selectedProject.externalLabel || "Project Portal"}
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-xs font-mono text-white/50 uppercase">
+                    {selectedProject.subGroup}
                   </span>
-                </a>
-
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="px-6 py-2 rounded-full border border-white/20 text-white/70 hover:text-white text-xs uppercase tracking-wider transition-colors cursor-pointer"
-                >
-                  Close Dossier
-                </button>
+                  <span className="text-white/30">•</span>
+                  <span
+                    className="text-xs uppercase tracking-widest font-semibold px-2.5 py-0.5 rounded-full"
+                    style={{
+                      backgroundColor: `${selectedProject.categoryColor}33`,
+                      color: selectedProject.categoryColor,
+                    }}
+                  >
+                    {selectedProject.category}
+                  </span>
+                </div>
+                <h3 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
+                  {selectedProject.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-white/60 font-light mt-1">
+                  {selectedProject.tagline}
+                </p>
               </div>
-            )}
+
+              <button
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors cursor-pointer"
+                title="Close (ESC)"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Media Showcase */}
+            <div className="flex flex-col gap-3">
+              {/* Media Switcher Buttons */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                {selectedProject.mediaItems.map((media) => {
+                  const isActive = modalMediaId === media.id;
+                  return (
+                    <button
+                      key={media.id}
+                      type="button"
+                      onClick={() => setModalMediaId(media.id)}
+                      className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs whitespace-nowrap cursor-pointer transition-all ${
+                        isActive
+                          ? "text-white font-semibold shadow-md"
+                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10"
+                      }`}
+                      style={{
+                        backgroundColor: isActive
+                          ? selectedProject.categoryColor
+                          : undefined,
+                      }}
+                    >
+                      {media.type === "video" ? (
+                        <Play
+                          size={11}
+                          className={
+                            isActive ? "text-white" : "text-purple-400"
+                          }
+                        />
+                      ) : (
+                        <Radio
+                          size={11}
+                          className={isActive ? "text-white" : "text-cyan-400"}
+                        />
+                      )}
+                      <span>{media.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Media Container */}
+              {(() => {
+                const currentMedia =
+                  selectedProject.mediaItems.find(
+                    (m) => m.id === modalMediaId,
+                  ) || selectedProject.mediaItems[0];
+                return (
+                  <div className="relative rounded-2xl overflow-hidden aspect-video bg-black border border-white/15">
+                    {currentMedia.type === "video" ? (
+                      <video
+                        src={currentMedia.src}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        controls
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={currentMedia.src}
+                        alt={currentMedia.label}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                    <div className="absolute bottom-2 left-3 right-3 z-10 pointer-events-none">
+                      <span className="text-[11px] font-mono bg-black/80 px-2.5 py-1 rounded text-white/90 border border-white/15">
+                        {currentMedia.caption}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Factual Metrics Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-white/5 border border-white/10 text-xs">
+              {selectedProject.metrics.map((m, mIdx) => (
+                <div
+                  key={mIdx}
+                  className="flex flex-col border-l-2 pl-2.5"
+                  style={{ borderColor: `${selectedProject.categoryColor}60` }}
+                >
+                  <span className="text-[9px] text-white/50 uppercase font-mono">
+                    {m.label}
+                  </span>
+                  <span className="text-white font-medium text-xs mt-0.5">
+                    {m.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Full Story Content (Verbatim from content.md) */}
+            <div className="flex flex-col gap-4 text-xs sm:text-sm text-[#D7E2EA]/95 leading-relaxed font-light">
+              <h4 className="text-xs uppercase tracking-widest font-mono text-cyan-400 flex items-center gap-2 border-b border-white/10 pb-1">
+                <BookOpen size={14} />
+                <span>Story & Narrative</span>
+              </h4>
+
+              <div className="flex flex-col gap-3.5">
+                {selectedProject.storyParagraphs.map((para, pIdx) => (
+                  <div key={pIdx} className="flex flex-col gap-1">
+                    {para.title && (
+                      <h5 className="text-white font-semibold text-sm sm:text-base tracking-tight flex items-center gap-1.5 mt-1">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{
+                            backgroundColor: selectedProject.categoryColor,
+                          }}
+                        />
+                        <span>{para.title}</span>
+                      </h5>
+                    )}
+                    <p className="leading-relaxed text-[#D7E2EA]/85">
+                      {para.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Takeaway Quote Box */}
+              {selectedProject.takeaway && (
+                <div
+                  className="mt-2 p-4 rounded-xl border flex items-start gap-3 bg-purple-950/20"
+                  style={{ borderColor: `${selectedProject.categoryColor}50` }}
+                >
+                  <Quote
+                    size={20}
+                    className="flex-shrink-0 mt-0.5"
+                    style={{ color: selectedProject.categoryColor }}
+                  />
+                  <div>
+                    <span
+                      className="text-[10px] font-mono uppercase font-semibold block mb-0.5"
+                      style={{ color: selectedProject.categoryColor }}
+                    >
+                      Takeaway
+                    </span>
+                    <p className="text-xs sm:text-sm italic text-white/95 leading-relaxed font-normal">
+                      &ldquo;{selectedProject.takeaway}&rdquo;
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer with External Links & Close */}
+            <div className="mt-2 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center gap-2">
+                {selectedProject.externalLinks.map((link, lIdx) => (
+                  <a
+                    key={lIdx}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-all"
+                  >
+                    <ExternalLink size={13} />
+                    <span>{link.label}</span>
+                  </a>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                className="px-6 py-2 rounded-full border border-white/20 text-white/70 hover:text-white text-xs uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* High-Resolution Image Preview Lightbox Modal (Instant, Zero Lag) */}
+      {/* High-Resolution Image Preview Lightbox Modal */}
       {previewData && (
         <div
           className="fixed inset-0 z-[100] flex flex-col justify-between bg-black/95 backdrop-blur-md p-3 sm:p-6 select-none"
@@ -830,7 +1004,7 @@ export const ProjectsSection: React.FC = () => {
                 <h4 className="text-white font-semibold text-sm sm:text-base leading-tight">
                   {previewData.title}
                 </h4>
-                <p className="text-xs text-cyan-400 font-mono mt-0.5">
+                <p className="text-xs text-cyan-400 font-mono mt-0.5 line-clamp-1">
                   {previewData.images[previewIndex]?.label}
                 </p>
               </div>
@@ -844,7 +1018,7 @@ export const ProjectsSection: React.FC = () => {
                 type="button"
                 onClick={() => setPreviewData(null)}
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors flex items-center gap-1.5"
-                title="Đóng (Esc)"
+                title="Close"
               >
                 <X size={18} />
                 <span className="text-xs font-mono hidden sm:inline">ESC</span>
@@ -867,7 +1041,7 @@ export const ProjectsSection: React.FC = () => {
                   )
                 }
                 className="absolute left-2 sm:left-4 z-20 p-2.5 sm:p-3 rounded-full bg-black/75 hover:bg-black border border-white/20 text-white cursor-pointer transition-colors shadow-2xl"
-                title="Ảnh trước (Mũi tên trái)"
+                title="Previous"
               >
                 <ChevronLeft size={22} />
               </button>
@@ -890,7 +1064,7 @@ export const ProjectsSection: React.FC = () => {
                   )
                 }
                 className="absolute right-2 sm:right-4 z-20 p-2.5 sm:p-3 rounded-full bg-black/75 hover:bg-black border border-white/20 text-white cursor-pointer transition-colors shadow-2xl"
-                title="Ảnh tiếp theo (Mũi tên phải)"
+                title="Next"
               >
                 <ChevronRight size={22} />
               </button>
@@ -899,7 +1073,7 @@ export const ProjectsSection: React.FC = () => {
 
           {/* Bottom Thumbnail Strip */}
           <div
-            className="max-w-xl w-full mx-auto flex items-center justify-center gap-2 pt-2 border-t border-white/10"
+            className="max-w-xl w-full mx-auto flex items-center justify-center gap-2 pt-2 border-t border-white/10 overflow-x-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {previewData.images.map((img, idx) => (
@@ -907,7 +1081,7 @@ export const ProjectsSection: React.FC = () => {
                 key={idx}
                 type="button"
                 onClick={() => setPreviewIndex(idx)}
-                className={`h-12 sm:h-14 aspect-video rounded-lg overflow-hidden border-2 cursor-pointer transition-all ${
+                className={`h-12 sm:h-14 aspect-video rounded-lg overflow-hidden border-2 cursor-pointer transition-all flex-shrink-0 ${
                   idx === previewIndex
                     ? "border-cyan-400 opacity-100 scale-105"
                     : "border-white/15 opacity-60 hover:opacity-90"
