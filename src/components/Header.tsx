@@ -5,16 +5,15 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 interface NavItem {
   label: string;
   id: string;
-  number: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "About", id: "about", number: "01" },
-  { label: "Projects", id: "projects", number: "02" },
-  { label: "Deep Dive", id: "deep-dive", number: "03" },
-  { label: "Community Impact", id: "community-impact", number: "04" },
-  { label: "Achievements", id: "achievements", number: "05" },
-  { label: "Personal Corner", id: "personal", number: "06" },
+  { label: "About", id: "about" },
+  { label: "Projects", id: "projects" },
+  { label: "Deep Dive", id: "deep-dive" },
+  { label: "Community Impact", id: "community-impact" },
+  { label: "Achievements", id: "achievements" },
+  { label: "Personal Corner", id: "personal" },
 ];
 
 export const Header: React.FC = () => {
@@ -206,25 +205,21 @@ export const Header: React.FC = () => {
 
           {/* Scrolled: Show Current Active Section Pill */}
           {isScrolled && (
-            <div className="flex items-center gap-1.5 border-l border-white/15 pl-2 pr-1 truncate">
-              <span className="text-[10px] font-mono text-cyan-400">
-                {currentActiveItem.number}
-              </span>
-              <span className="text-xs font-medium text-white/90 truncate max-w-[120px]">
+            <div className="flex items-center border-l border-white/15 pl-2.5 pr-1 truncate">
+              <span className="text-xs font-medium text-white/90 truncate max-w-[140px]">
                 {currentActiveItem.label}
               </span>
             </div>
           )}
 
-          {/* Right: Mobile Menu Toggle Button */}
+          {/* Right: Mobile Menu Toggle Button (Icon only) */}
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open Navigation Menu"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-medium uppercase tracking-wider transition-all cursor-pointer shrink-0"
+            className="p-1.5 sm:p-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all cursor-pointer shrink-0 flex items-center justify-center"
           >
-            <Menu size={14} />
-            <span>Menu</span>
+            <Menu size={16} />
           </button>
         </div>
       </header>
@@ -275,14 +270,9 @@ export const Header: React.FC = () => {
                         : "bg-transparent text-[#D7E2EA]/75 hover:text-white hover:bg-white/5 font-light"
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-cyan-400 opacity-70">
-                        {item.number}
-                      </span>
-                      <span className="text-lg sm:text-xl uppercase tracking-wider font-['Kanit',sans-serif]">
-                        {item.label}
-                      </span>
-                    </div>
+                    <span className="text-lg sm:text-xl uppercase tracking-wider font-['Kanit',sans-serif]">
+                      {item.label}
+                    </span>
 
                     <ArrowUpRight
                       size={18}
