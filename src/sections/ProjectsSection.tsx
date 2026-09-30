@@ -144,7 +144,7 @@ const projects: Project[] = [
         id: "recognition",
         label: "Deputy PM Recognition",
         type: "image",
-        src: "/images/journey/gart/banner.jpg",
+        src: "/images/achievements/deputy-pm-recognition.jpg",
         caption: "Recognition and national honors for team excellence",
         tag: "Recognition",
       },

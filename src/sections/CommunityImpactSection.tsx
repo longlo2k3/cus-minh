@@ -236,6 +236,32 @@ const GALLERY_ITEMS: GalleryItem[] = [
       "I served as a field reset volunteer at the Red River Delta VEX V5 robot tournaments, ensuring fair match operations and assisting student teams throughout intense multi-division robotics matches.",
   },
   {
+    id: "stembridge-video",
+    category: "Stembridge",
+    title: "Hands-on Workshop Highlights",
+    subtitle: "Classroom Building & Student Engagement",
+    location: "Lang Son School Workshops",
+    imageSrc: "/videos/stembridge-workshop.mp4",
+    imageAlt: "Stembridge interactive workshop session video",
+    caption:
+      "Live footage of students assembling and testing mechanical models during Stembridge workshops.",
+    details:
+      "Real classroom footage documenting student teams eagerly designing, building, and exploring hands-on STEM experiment kits.",
+  },
+  {
+    id: "cosmosic-video",
+    category: "Volunteer",
+    title: "Water Rocket Launch Demonstration",
+    subtitle: "Physics in Action",
+    location: "Lang Son Outdoor Field",
+    imageSrc: "/videos/cosmosic-rocket.mov",
+    imageAlt: "Cosmosics water rocket outdoor launch demonstration video",
+    caption:
+      "Outdoor physics demonstration launching high-pressure water rockets with students.",
+    details:
+      "Live video capturing the excitement as students witness aerodynamics and pressure principles during our outdoor water rocket launches in Lang Son.",
+  },
+  {
     id: "outreach",
     category: "Volunteer",
     title: "Community STEM Sessions in Lang Son",
@@ -693,13 +719,25 @@ export default function CommunityImpactSection() {
               })}
             </div>
 
-            {/* Large Cinematic Image Showcase with Viewfinder Brackets */}
+            {/* Large Cinematic Image / Video Showcase with Viewfinder Brackets */}
             <div className="relative rounded-2xl overflow-hidden bg-black/95 border border-white/10 w-full h-[52vh] sm:h-[62vh] md:h-[68vh] lg:h-[72vh] min-h-[420px] max-h-[760px] flex items-center justify-center group shadow-2xl">
-              <img
-                src={activeMedia.imageSrc}
-                alt={activeMedia.imageAlt}
-                className="w-full h-full object-contain p-1 sm:p-2 transition-transform duration-700 select-none"
-              />
+              {activeMedia.imageSrc.endsWith(".mp4") ||
+              activeMedia.imageSrc.endsWith(".mov") ? (
+                <video
+                  src={activeMedia.imageSrc}
+                  controls
+                  autoPlay
+                  muted
+                  playsInline
+                  className="w-full h-full object-contain p-1 sm:p-2"
+                />
+              ) : (
+                <img
+                  src={activeMedia.imageSrc}
+                  alt={activeMedia.imageAlt}
+                  className="w-full h-full object-contain p-1 sm:p-2 transition-transform duration-700 select-none"
+                />
+              )}
 
               {/* Viewfinder Brackets */}
               <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-white/70 z-20 pointer-events-none" />
